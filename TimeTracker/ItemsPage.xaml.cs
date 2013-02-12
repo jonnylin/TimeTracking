@@ -46,13 +46,24 @@ namespace TimeTracker
             logincontrol1.IsOpen = false;
         }
 
-        private void ShowNewTaskBox()
+        private void ShowNewTaskBox(bool isCat)
         {
             normalControl.IsEnabled = false;
             this.Opacity = .4;
             popupControl.IsEnabled = true;
             logincontrol1.IsOpen = true;
             pop.Width = Window.Current.Bounds.Width;
+
+            if (isCat)
+            {
+                newTaskUserControl.Visibility = Visibility.Collapsed;
+                newCatUserControl.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                newTaskUserControl.Visibility = Visibility.Visible;
+                newCatUserControl.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void ButtonClick1(object sender, RoutedEventArgs e)
@@ -62,14 +73,16 @@ namespace TimeTracker
 
         private void AddClick(object sender, RoutedEventArgs e)
         {
-            ShowNewTaskBox();
+            ShowNewTaskBox(false);
 
             BottomAppBar.IsOpen = false;
         }
 
         private void AddCatClick(object sender, RoutedEventArgs e)
         {
+            ShowNewTaskBox(true);
 
+            BottomAppBar.IsOpen = false;
         }
 
         private  async void DeleteCategory(object sender, RoutedEventArgs e)
@@ -134,7 +147,14 @@ namespace TimeTracker
         {
             try
             {
-                newTaskUserControl.NewWorkingTask(sender, e);
+                if (newTaskUserControl.Visibility == Visibility.Visible)
+                {
+                    newTaskUserControl.NewWorkingTask(sender, e);
+                }
+                else
+                {
+                    newCatUserControl.NewCategory(sender, e);
+                }
 
                 HidePopUp();
             }
@@ -148,6 +168,9 @@ namespace TimeTracker
         {
             HidePopUp();
         }
+
+        #region Drag and Drop
+
 
         private void ListView_DragItemsStarting_1(object sender, DragItemsStartingEventArgs e)
         {
@@ -176,6 +199,7 @@ namespace TimeTracker
 
             AppDataSource.ModifyNodeParent(droppedObject.UniqueId, ((sender as Grid).DataContext as HierarchyTaskObject).taskObj.UniqueId);
             //
-        }
+        } 
+        #endregion
     }
 }

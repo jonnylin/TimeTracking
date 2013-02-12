@@ -395,7 +395,8 @@
 
 					<Grid x:Name="pop" Background="White">
 						<Grid Width="600" Margin="5">
-							<local:AddNewTaskUserControl x:Name="newTaskUserControl" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,40"/>
+							<local:AddNewTaskUserControl x:Name="newTaskUserControl" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+							<local:AddNewCategoryUserControl x:Name="newCatUserControl" HorizontalAlignment="Left" Margin="0,0,0,40" VerticalAlignment="Top"/>
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0">
 								<Button x:Name="start_task" Click="StartTaskBtnClick" Foreground="Black"   Content="create" HorizontalAlignment="Right" Width="100" />
 								<Button Content="cancel" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="100" Click="Cancel"/>

@@ -179,6 +179,7 @@ namespace DataSource
                 NodeManager.AddTaskNode(hierarchyNodeMetaData, taskCreated, NodeManager.GetAllLevels[1]);
             }
             AppDataSource.TotalTasks.Add(taskCreated);
+
             return taskCreated.UniqueId;
         }
 

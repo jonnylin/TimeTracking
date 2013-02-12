@@ -108,6 +108,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddNewCategoryUserControl.xaml.cs">
+      <DependentUpon>AddNewCategoryUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddNewTaskUserControl.xaml.cs">
       <DependentUpon>AddNewTaskUserControl.xaml</DependentUpon>
     </Compile>
@@ -167,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AddNewCategoryUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddNewTaskUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
