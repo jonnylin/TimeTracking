@@ -12,16 +12,15 @@
 
     <common:LayoutAwarePage.Resources>
 
-    	<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-
         <DataTemplate x:Key="DataTemplate3">
-        	<StackPanel><TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top"/>
+        	<StackPanel><TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" FontSize="16"/>
+<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Top" Margin="5,0,0,0"/>
         		<StackPanel Grid.Column="1" Orientation="Horizontal">
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding timeEntryCollection.TotalTime.Hours, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TimeEntryCollection.TotalTime.Hours, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="hours," VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding timeEntryCollection.TotalTime.Minutes, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TimeEntryCollection.TotalTime.Minutes, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="minutes," VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding timeEntryCollection.TotalTime.Seconds, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TimeEntryCollection.TotalTime.Seconds, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="seconds" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0"/>
         		</StackPanel>
         	</StackPanel>
@@ -29,9 +28,9 @@
         <DataTemplate x:Key="EntryCollectionItemTemplate">
         	<StackPanel>
         		<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Name}" FontSize="26.667"/>
-        		<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Comment}"/>
-        		<ListView HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemsSource="{Binding hierarchyObj.Children}" ItemTemplate="{StaticResource DataTemplate3}"/>
-        		<StackPanel Orientation="Horizontal">
+        		<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Comment}" Margin="5,0,0,0"/>
+        		<ListView HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemsSource="{Binding hierarchyObj.Children}" ItemTemplate="{StaticResource DataTemplate3}" SelectionMode="None" Margin="0,0,0,20"/>
+        		<StackPanel Orientation="Horizontal" Margin="0,0,0,40">
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Total Time: " VerticalAlignment="Top" FontSize="26.667" Margin="0,0,5,0" Foreground="#FF098600"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Hours, Mode=OneWay}" VerticalAlignment="Top" FontSize="26.667" Margin="0,0,5,0" Foreground="#FF098600"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="hours," VerticalAlignment="Top" FontSize="26.667" Margin="0,0,5,0" Foreground="#FF098600"/>
@@ -42,10 +41,26 @@
         		</StackPanel>
         	</StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="AllDaysTemplate">
-        	<Grid>
-        		<TextBlock TextWrapping="Wrap" Text="{Binding CreatedTime.Date, Mode=OneWay}"/>
+        <DataTemplate x:Key="TImeEntryItemTemplate">
+        	<Grid d:DesignWidth="190">
+        		<Grid.ColumnDefinitions>
+        			<ColumnDefinition/>
+        			<ColumnDefinition Width="51"/>
+        			<ColumnDefinition Width="Auto"/>
+        		</Grid.ColumnDefinitions>
+        		<StackPanel Orientation="Horizontal" Visibility="Collapsed">
+        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="13" Width="45"/>
+        			<TextBlock TextWrapping="Wrap" Text="TextBlock"/>
+        		</StackPanel>
+        		<TextBlock TextWrapping="Wrap" Text="{Binding Comment}" Grid.Column="1"/>
+        		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding TimeTaken}" VerticalAlignment="Top" Grid.Column="2" Margin="20,0,0,0"/>
         	</Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="AllDaysTemplate">
+        	<StackPanel>
+        		<TextBlock TextWrapping="Wrap" Text="{Binding CreatedTime, Mode=OneWay}" Height="20" Width="100" HorizontalAlignment="Left"/>
+        		<ListView ItemsSource="{Binding TimeEntriesInADay}" SelectionMode="None" ItemTemplate="{StaticResource TImeEntryItemTemplate}"/>
+        	</StackPanel>
         </DataTemplate>
     </common:LayoutAwarePage.Resources>
 
@@ -136,7 +151,7 @@
         				</StackPanel>
         			</Grid>
         		</StackPanel>
-        		<ListView ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" ItemTemplate="{StaticResource EntryCollectionItemTemplate}" Margin="0,0,0,20">
+        		<ListView ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" ItemTemplate="{StaticResource EntryCollectionItemTemplate}" Margin="0,0,0,20" SelectionMode="None">
         			<ListView.DataContext>
         				<DataSource:AppDataSource/>
         			</ListView.DataContext>

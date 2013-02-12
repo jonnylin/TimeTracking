@@ -15,7 +15,6 @@
 
         <local:IsRunningToContentConverter x:Key="IsRunningToContentConverter"/>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
         <DataTemplate x:Key="TaskListTemplate">
         	<StackPanel Orientation="Horizontal">
         		<local:TaskListUserControl Height="40" Foreground="Black" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>

@@ -19,7 +19,7 @@ namespace DataSource
 
         public bool IsVisible { get; set; }
 
-        public TimeEntryCollection TimeEntryCollection { get { return AppDataSource.GetCurrentObject().TaskCollection.GetCollectionById(UniqueId); } }
+        public TimeEntryCollection TimeEntryCollection { get { return AppDataSource.CurrentObject.TaskCollection.GetCollectionById(UniqueId); } }
 
         public bool IsWorking { get; set; }
 
@@ -33,7 +33,7 @@ namespace DataSource
 
                 try
                 {
-                    AppDataSource.GetCurrentObject().RunningTaskManager.UpdateTask(this);
+                    AppDataSource.CurrentObject.RunningTaskManager.UpdateTask(this);
                 }
                 catch (Exception)
                 {

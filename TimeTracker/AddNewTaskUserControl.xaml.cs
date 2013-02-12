@@ -28,7 +28,7 @@ namespace TimeTracker
 
         void AddNewTaskUserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            categoryComboBox.DataContext = AppDataSource.GetCurrentObject();
+            categoryComboBox.DataContext = AppDataSource.CurrentObject;
         }
 
         public string NewWorkingTask(object sender, RoutedEventArgs e)

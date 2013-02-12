@@ -15,7 +15,7 @@ namespace DataSource
         {
             TimeSpan timeSpan = new TimeSpan(0);
 
-            foreach (Day day in AppDataSource.GetCurrentObject().AllDays)
+            foreach (Day day in AppDataSource.CurrentObject.AllDays)
             {
                 foreach (TimeEntry task in day.TimeEntriesInADay)
                 {

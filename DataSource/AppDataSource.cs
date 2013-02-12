@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace DataSource
 {
-    public class AppDataSource
+    public class AppDataSource: IDataModel
     {
         private static AppDataSource _appDataSource = new AppDataSource();
+        public static AppDataSource CurrentObject
+        {
+            get { return _appDataSource; }
+        }
+
         private static Guid guid { get; set; }
         public static HierarchyManager NodeManager { get; set; }
 
         private RunningTaskManager _runningTaskManager = new RunningTaskManager();
-
         public RunningTaskManager RunningTaskManager
         {
             get { return _runningTaskManager; }
@@ -22,7 +26,6 @@ namespace DataSource
         }
 
         private TaskCollection _taskCollection = new TaskCollection();
-
         public TaskCollection TaskCollection
         {
             get
@@ -35,7 +38,6 @@ namespace DataSource
             }
             set { _taskCollection = value; }
         }
-
 
         private static ObservableCollection<TaskObject> _totalTasks;
         public static ObservableCollection<TaskObject> TotalTasks
@@ -101,21 +103,6 @@ namespace DataSource
             set { this._workingTasks = value; }
         }
 
-        public static AppDataSource GetCurrentObject()
-        {
-            return _appDataSource;
-        }
-
-        public static TaskObject GetCurrentTask()
-        {
-            return _appDataSource.CurrentTask;
-        }
-
-        public static void SetCurrentObject(TaskObject newTask)
-        {
-            _appDataSource.CurrentTask = newTask;
-        }
-
         public static bool IsTaskWorking(string id)
         {
             return GetTaskObjectById(id).IsWorking;
@@ -132,15 +119,7 @@ namespace DataSource
             return _appDataSource.Today;
         }
 
-        private TaskObject _currentTask;
-        public TaskObject CurrentTask
-        {
-            get { return _appDataSource._currentTask; }
-            set { _appDataSource._currentTask = value; }
-        }
-
         private Day _today;
-
         public Day Today
         {
             get
@@ -166,14 +145,13 @@ namespace DataSource
             return null;
         }
 
-        public static List<TaskObject> FinishedTasks
-        {
-            get
-            {
-                return AppDataSource.TotalTasks.Where(task => task.Finished == true).ToList();
-            }
-        }
-
+        //public static List<TaskObject> FinishedTasks
+        //{
+        //    get
+        //    {
+        //        return AppDataSource.TotalTasks.Where(task => task.Finished == true).ToList();
+        //    }
+        //}
 
         public static string AddTask(string taskName, bool working, int level, string comment, bool isCategory, string id = null, bool isVisible = true)
         {
@@ -198,19 +176,6 @@ namespace DataSource
             AppDataSource.TotalTasks.Add(taskCreated);
 
             return taskCreated.UniqueId;
-        }
-
-        public static ObservableCollection<TaskObject> GetTasksByCategory(string categoryName)
-        {
-            var children = new ObservableCollection<TaskObject>();
-            foreach (var category in NodeManager.GetAllLevels[0].LevelCollection)
-            {
-                if (category.taskObj.Name.Equals(categoryName))
-                {
-                    children = category.hierarchyObj.Children;
-                }
-            }
-            return children;
         }
 
         public static bool DeleteTask(string taskid)
@@ -250,6 +215,19 @@ namespace DataSource
             //_appDataSource.RunningTaskManager.RunningTasks.Remove(FindTask(taskid));
             //TotalTasks.Remove(FindTask(taskid));  //diff method needed (specific to this collection)
             return true;
+        }
+
+        public static ObservableCollection<TaskObject> GetTasksByCategory(string categoryName)
+        {
+            var children = new ObservableCollection<TaskObject>();
+            foreach (var category in NodeManager.GetAllLevels[0].LevelCollection)
+            {
+                if (category.taskObj.Name.Equals(categoryName))
+                {
+                    children = category.hierarchyObj.Children;
+                }
+            }
+            return children;
         }
 
         //set or reset parent of node (id req) to parent (id req)
@@ -409,13 +387,9 @@ namespace DataSource
             return itemLookingFor;
         }
 
-        //public SubTask GetTaskById(string taskId)
-        //{
-        //    _totalTasks.FirstOrDefault(
-        //}
-
         static AppDataSource()
         {
+
             NodeManager = new HierarchyManager(Guid.NewGuid().ToString(), "HierarchyManager", guid);
             NodeManager.AddLevel(0);
             NodeManager.AddLevel(1);
@@ -433,6 +407,16 @@ namespace DataSource
             //AddTask(new TaskObject("Test Task5", "5", "Test Task comment", true));
             //AddTask(new TaskObject("Test Task6", "6", "Test Task comment", true));
             //AddTask(new TaskObject("Test Task7", "7", "Test Task comment", true));
+        }
+
+        public Task<IDataModel> LoadData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SaveData()
+        {
+            throw new NotImplementedException();
         }
     }
 }

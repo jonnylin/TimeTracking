@@ -11,8 +11,7 @@
     d:DesignHeight="400"
     d:DesignWidth="600">
 	<UserControl.Resources>
-		<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-		<DataTemplate x:Key="CategoryTemplate">
+	    <DataTemplate x:Key="CategoryTemplate">
 			<Grid>
 				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding taskObj.Name}" VerticalAlignment="Top" FontSize="13.333"/>
 			</Grid>

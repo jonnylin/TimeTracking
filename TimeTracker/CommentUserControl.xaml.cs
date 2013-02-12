@@ -24,12 +24,7 @@ namespace TimeTracker
 
             timeEntry.Comment = commentBox.Text;
 
-            thisControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-        }
-
-        private void UserControlLostFocus1(object sender, RoutedEventArgs e)
-        {
-            thisControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            thisControl.Visibility = Visibility.Collapsed;
         }
     }
 }

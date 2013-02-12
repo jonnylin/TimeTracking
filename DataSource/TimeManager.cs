@@ -1,10 +1,5 @@
 ﻿using DataSource.Common;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataSource
 {
@@ -41,9 +36,9 @@ namespace DataSource
 
             _timeManager.RunningTimeEntry.SetTimeTaken(DateTime.Now);
 
-            AppDataSource.GetCurrentObject().TaskCollection.AddToCollection(_timeManager.RunningTimeEntry);
+            AppDataSource.CurrentObject.TaskCollection.AddToCollection(_timeManager.RunningTimeEntry);
 
-            AppDataSource.GetCurrentObject().Today.TimeEntriesInADay.Add(_timeManager.RunningTimeEntry);
+            AppDataSource.CurrentObject.Today.TimeEntriesInADay.Add(_timeManager.RunningTimeEntry);
         }
 
         public static void StartTimerById(string id)
