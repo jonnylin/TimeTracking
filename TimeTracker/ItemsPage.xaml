@@ -27,17 +27,17 @@
         	</StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="AllTaskView">
-        	<Grid HorizontalAlignment="Left" Drop="CategoryDrop" AllowDrop="True" Background="#2DCDCDCD">
+        	<Grid Drop="CategoryDrop" AllowDrop="True" Background="#2DCDCDCD">
         		<Grid.ColumnDefinitions>
         			<ColumnDefinition Width="500"/>
-        			<ColumnDefinition Width="Auto" MinWidth="100"/>
+        			<ColumnDefinition/>
         		</Grid.ColumnDefinitions>
         		<StackPanel Orientation="Horizontal" AllowDrop="False">
         			<Button Content="&#xE0E0;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe UI Symbol" Padding="4" Click="DeleteCategory" Background="{x:Null}" BorderBrush="{x:Null}"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding taskObj.Name}" VerticalAlignment="Top" Margin="5,7,10,0" FontSize="16" FontWeight="Bold"/>
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Top" Margin="0,0,10,0"/>
         		</StackPanel>
-        		<ListView Grid.Column="1" ItemsSource="{Binding hierarchyObj.Children}" Width="400" ItemTemplate="{StaticResource ChildItemTemplate}" CanDragItems="True" DragItemsStarting="ListView_DragItemsStarting_1" AllowDrop="False"/>
+        		<ListView Grid.Column="1" ItemsSource="{Binding hierarchyObj.Children}" ItemTemplate="{StaticResource ChildItemTemplate}" CanDragItems="True" DragItemsStarting="ListView_DragItemsStarting_1" AllowDrop="False"/>
         	</Grid>
         </DataTemplate>
         <DataTemplate x:Key="DataTemplate1">
@@ -416,7 +416,7 @@
 					<RowDefinition Height="140"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<ListView x:Name="HierachyList"  ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" Margin="120,0,120,50"  Grid.Row="1" ItemTemplate="{StaticResource AllTaskView}" Foreground="Black" BorderBrush="#57000000" BorderThickness="2" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}"/>
+				<ListView x:Name="HierachyList"  ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" Margin="120,0,120,50"  Grid.Row="1" ItemTemplate="{StaticResource AllTaskView}" Foreground="Black" BorderBrush="#57000000" BorderThickness="2" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}" Padding="0,0,-18,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>

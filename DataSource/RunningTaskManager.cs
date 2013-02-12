@@ -21,31 +21,34 @@ namespace DataSource
 
         public void UpdateTask(TaskObject taskObject)
         {
-            //if(taskObject.Deleted)
-            //{
-            //    NotRunningTasks.Remove(taskObject);
-            //    RunningTasks.Remove(taskObject);
-            //}
-            if (taskObject.IsRunning)
+            if (taskObject.Deleted)
             {
-                if (!RunningTasks.Contains(taskObject))
-                {
-                    RunningTasks.Add(taskObject);
-                }
-                if (NotRunningTasks.Contains(taskObject))
-                {
-                    NotRunningTasks.Remove(taskObject);
-                }
+                NotRunningTasks.Remove(taskObject);
+                RunningTasks.Remove(taskObject);
             }
             else
             {
-                if (!NotRunningTasks.Contains(taskObject))
+                if (taskObject.IsRunning)
                 {
-                    NotRunningTasks.Add(taskObject);
+                    if (!RunningTasks.Contains(taskObject))
+                    {
+                        RunningTasks.Add(taskObject);
+                    }
+                    if (NotRunningTasks.Contains(taskObject))
+                    {
+                        NotRunningTasks.Remove(taskObject);
+                    }
                 }
-                if (RunningTasks.Contains(taskObject))
+                else
                 {
-                    RunningTasks.Remove(taskObject);
+                    if (!NotRunningTasks.Contains(taskObject))
+                    {
+                        NotRunningTasks.Add(taskObject);
+                    }
+                    if (RunningTasks.Contains(taskObject))
+                    {
+                        RunningTasks.Remove(taskObject);
+                    }
                 }
             }
         }

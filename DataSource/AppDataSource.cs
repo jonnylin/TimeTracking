@@ -25,7 +25,14 @@ namespace DataSource
 
         public TaskCollection TaskCollection
         {
-            get { return _taskCollection; }
+            get
+            {
+                if (_taskCollection == null)
+                {
+                    _taskCollection = new TaskCollection();
+                }
+                return _taskCollection;
+            }
             set { _taskCollection = value; }
         }
 
@@ -212,6 +219,8 @@ namespace DataSource
             }
 
             NodeManager.RemoveTaskNode(FindTaskObject(taskid));
+            _appDataSource.RunningTaskManager.UpdateTask(FindTask(taskid));
+
             FindTaskObject(taskid).hierarchyObj.Parent = null;
             FindTaskObject(taskid).hierarchyObj.Children.Clear();
 
