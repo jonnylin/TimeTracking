@@ -1,17 +1,6 @@
 ﻿using DataSource;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -29,21 +18,16 @@ namespace TimeTracker
         }
 
 
-        private void saveComment(object sender, RoutedEventArgs e)
+        public void SaveComment(object sender, RoutedEventArgs e)
         {
-            TimeEntry timeEntry = (TimeEntry)(sender as Button).DataContext;
+            TimeEntry timeEntry = TimeManager.GetCurrentObject().RunningTimeEntry;
 
             timeEntry.Comment = commentBox.Text;
 
             thisControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
-        private void cancelComment(object sender, RoutedEventArgs e)
-        {
-            thisControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-        }
-
-        private void UserControl_LostFocus_1(object sender, RoutedEventArgs e)
+        private void UserControlLostFocus1(object sender, RoutedEventArgs e)
         {
             thisControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }

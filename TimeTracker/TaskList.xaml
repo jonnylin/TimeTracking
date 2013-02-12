@@ -19,7 +19,7 @@
         <DataTemplate x:Key="TaskListTemplate">
         	<StackPanel Orientation="Horizontal">
         		<local:TaskListUserControl Height="40" Foreground="Black" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-        		<Button Content="{Binding IsRunning, Converter={StaticResource IsRunningToContentConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="Button_Click_1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="20,0,0,0"/>
+        		<Button Content="{Binding IsRunning, Converter={StaticResource IsRunningToContentConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Click="PauseButtonClick" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="20,0,0,0"/>
         	</StackPanel>
         </DataTemplate>
         <CollectionViewSource 
@@ -38,8 +38,8 @@
 	<common:LayoutAwarePage.BottomAppBar>
 		<AppBar>
 			<StackPanel Height="100" Orientation="Horizontal">
-				<Button AutomationProperties.Name="start task" Content="&#xE102;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="startTaskClick"/>
-				<Button AutomationProperties.Name="add task" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="addTaskClick"/>
+				<Button AutomationProperties.Name="start task" Content="&#xE102;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="StartTaskClick"/>
+				<Button AutomationProperties.Name="add task" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddTaskClick"/>
 			</StackPanel>
 		</AppBar>
 	</common:LayoutAwarePage.BottomAppBar>
@@ -99,7 +99,7 @@
 	
 
         			<Grid x:Name="pop" Background="White">
-        				<Grid Width="600" Margin="0,20">
+        				<Grid x:Name="TaskGrid" Width="600" Margin="0,20">
         					<local:AddNewTaskUserControl x:Name="newTaskUserControl" HorizontalAlignment="Center" Padding="0,0,0,40" Margin="0,0,0,50"/>
         					<StackPanel x:Name="comboBoxAndButton" Margin="0,0,0,50" d:IsHidden="True">
         						<TextBlock Text="Start New Task" Foreground="Black" FontSize="26.667" HorizontalAlignment="Left" FontFamily="Segoe UI" VerticalAlignment="Top" />
@@ -112,11 +112,18 @@
         							</ComboBox>
         						</StackPanel>
         						<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="OR" VerticalAlignment="Center" FontSize="16" Margin="0,0,0,10"/>
-        						<Button x:Name="newTaskButton" Content="create new task" HorizontalAlignment="Center" VerticalAlignment="Stretch" Click="newTaskButton_Click"/>
+        						<Button x:Name="newTaskButton" Content="create new task" HorizontalAlignment="Center" VerticalAlignment="Stretch" Click="NewTaskButtonClick"/>
         					</StackPanel>
         					<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0">
-        						<Button x:Name="start_task" Click="startTaskBtnClick" Foreground="Black"   Content="start task" HorizontalAlignment="Right" Width="100" />
+        						<Button x:Name="start_task" Click="StartTaskBtnClick" Foreground="Black"   Content="start task" HorizontalAlignment="Right" Width="100" />
         						<Button Content="cancel" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="100" Click="Cancel"/>
+        					</StackPanel>
+        				</Grid>
+        				<Grid x:Name="CommentGrid" Width="600" Margin="0,20">
+        					<local:CommentUserControl x:Name="CommentUserControl" HorizontalAlignment="Left" Margin="0,0,0,40" VerticalAlignment="Top" Width="Auto"/>
+        					<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        						<Button Content="save" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="SaveComment" Width="100"/>
+        						<Button Content="cancel" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="CancelComment" Width="100"/>
         					</StackPanel>
         				</Grid>
 

@@ -16,6 +16,11 @@ namespace TimeTracker
     {
         private bool isFromAppBar = false;
 
+        private enum PopUpType
+        {
+            NewTask, StartTask, AddComment
+        }
+
         public TaskList()
         {
             this.InitializeComponent();
@@ -57,7 +62,7 @@ namespace TimeTracker
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    ShowNewTaskBox(false);
+                    ShowPopUp(PopUpType.StartTask);
                     break;
                 case MessageBoxResult.No:
                     TimeManager.StartNonWorkingTask();
@@ -77,7 +82,7 @@ namespace TimeTracker
             logincontrol1.IsOpen = false;
         }
 
-        private void ShowNewTaskBox(bool isNewTask)
+        private void ShowPopUp(PopUpType popUpType)
         {
             normalControl.IsEnabled = false;
             this.Opacity = .4;
@@ -85,25 +90,50 @@ namespace TimeTracker
             logincontrol1.IsOpen = true;
             pop.Width = Window.Current.Bounds.Width;
 
-            if (isNewTask)
+            UpdatePopupBoxContent(popUpType);
+        }
+
+        private void UpdatePopupBoxContent(PopUpType popUpType)
+        {
+            switch (popUpType)
             {
-                newTaskUserControl.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                comboBoxAndButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            }
-            else
-            {
-                newTaskUserControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                comboBoxAndButton.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                case PopUpType.NewTask:
+
+                    TaskGrid.Visibility = Visibility.Visible;
+                    CommentGrid.Visibility = Visibility.Collapsed;
+                    newTaskUserControl.Visibility = Visibility.Visible;
+                    comboBoxAndButton.Visibility = Visibility.Collapsed;
+
+                    break;
+                case PopUpType.StartTask:
+
+                    TaskGrid.Visibility = Visibility.Visible;
+                    CommentGrid.Visibility = Visibility.Collapsed;
+                    newTaskUserControl.Visibility = Visibility.Collapsed;
+                    comboBoxAndButton.Visibility = Visibility.Visible;
+                    break;
+
+                case PopUpType.AddComment:
+
+                    TaskGrid.Visibility = Visibility.Collapsed;
+                    CommentGrid.Visibility = Visibility.Visible;
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException("popUpType");
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+
+        private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
             TaskObject selectedObject = (sender as Button).DataContext as TaskObject;
 
             if (selectedObject.IsRunning)
             {
-                PauseTask();
+                ShowPopUp(PopUpType.AddComment);
+                CommentUserControl.DataContext = selectedObject;
             }
             else
             {
@@ -113,8 +143,6 @@ namespace TimeTracker
 
         private void NewTimeEntryObject(string id)
         {
-            //string comment
-
             TimeManager.StartTimerById(id);
         }
 
@@ -128,19 +156,18 @@ namespace TimeTracker
             HidePopUp();
         }
 
-        private void newTaskButton_Click(object sender, RoutedEventArgs e)
+        private void NewTaskButtonClick(object sender, RoutedEventArgs e)
         {
-            newTaskUserControl.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            comboBoxAndButton.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            UpdatePopupBoxContent(PopUpType.NewTask);
         }
 
-        private void startTaskBtnClick(object sender, RoutedEventArgs e)
+        private void StartTaskBtnClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 string newTaskId;
 
-                if (newTaskUserControl.Visibility == Windows.UI.Xaml.Visibility.Visible)
+                if (newTaskUserControl.Visibility == Visibility.Visible)
                 {
                     newTaskId = newTaskUserControl.NewWorkingTask(sender, e);
                 }
@@ -160,26 +187,38 @@ namespace TimeTracker
             }
         }
 
-        private void addTaskClick(object sender, RoutedEventArgs e)
+        private void AddTaskClick(object sender, RoutedEventArgs e)
         {
-            ShowNewTaskBox(true);
+            ShowPopUp(PopUpType.NewTask);
 
             isFromAppBar = true;
             BottomAppBar.IsOpen = false;
         }
 
-        private void startTaskClick(object sender, RoutedEventArgs e)
+        private void StartTaskClick(object sender, RoutedEventArgs e)
         {
-            ShowNewTaskBox(false);
+            ShowPopUp(PopUpType.StartTask);
 
             isFromAppBar = true;
             BottomAppBar.IsOpen = false;
         }
 
-        private void saveComment(object sender, RoutedEventArgs e)
+        private void SaveComment(object sender, RoutedEventArgs e)
         {
+            CommentUserControl.SaveComment(sender, e);
 
+            CollapseCommentBox();
         }
 
+        private void CancelComment(object sender, RoutedEventArgs e)
+        {
+            CollapseCommentBox();
+        }
+
+        private void CollapseCommentBox()
+        {
+            PauseTask();
+            HidePopUp();
+        }
     }
 }
