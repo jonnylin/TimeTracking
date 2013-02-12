@@ -4,15 +4,12 @@
     xmlns:local="using:TimeTracker" xmlns:common="using:TimeTracker.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:DataSource="using:DataSource"
-    xmlns:Common="using:DataSource.Common"
-    x:Name="pageRoot"
+    xmlns:DataSource="using:DataSource" x:Name="pageRoot"
     x:Class="TimeTracker.ItemsPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     mc:Ignorable="d">
 
     <common:LayoutAwarePage.Resources>
-    	<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <local:ListViewStyleSelector x:Name="ListViewSelector"/>
             <!-- Collection of items displayed by this page -->
         <CollectionViewSource
@@ -38,11 +35,6 @@
         			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Top" Margin="0,0,10,0"/>
         		</StackPanel>
         		<ListView Grid.Column="1" ItemsSource="{Binding hierarchyObj.Children}" ItemTemplate="{StaticResource ChildItemTemplate}" CanDragItems="True" DragItemsStarting="ListView_DragItemsStarting_1" AllowDrop="False"/>
-        	</Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="DataTemplate1">
-        	<Grid>
-        		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top"/>
         	</Grid>
         </DataTemplate>
         <Style x:Key="ListViewItemStyle1" TargetType="ListViewItem">
@@ -417,7 +409,7 @@
 					<RowDefinition Height="140"/>
 					<RowDefinition Height="*"/>
 				</Grid.RowDefinitions>
-				<ListView x:Name="HierachyList"  ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" Margin="120,0,120,50"  Grid.Row="1" ItemTemplate="{StaticResource AllTaskView}" Foreground="Black" BorderBrush="#57000000" BorderThickness="2" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}" Padding="0,0,-18,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+				<ListView x:Name="HierachyList"  ItemsSource="{Binding NodeManager.GetAllLevels[0].VisibleLevelCollection}" Margin="120,0,120,50"  Grid.Row="1" ItemTemplate="{StaticResource AllTaskView}" Foreground="Black" BorderBrush="#57000000" BorderThickness="2" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}" Padding="0,0,-18,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
 				<Grid>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto"/>

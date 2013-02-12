@@ -50,6 +50,23 @@ namespace DataSource
             }
         }
 
+        private ObservableCollection<TaskObject> _visibleTasks = new ObservableCollection<TaskObject>();
+        public ObservableCollection<TaskObject> VisibleTasks
+        {
+            get
+            {
+                this._visibleTasks.Clear();
+
+                foreach (var item in AppDataSource.TotalTasks.Where(t => t.IsVisible == true))
+                {
+                    this._visibleTasks.Add(item);
+                }
+
+                return this._visibleTasks;
+            }
+            set { this._visibleTasks = value; }
+        }
+
         private ObservableCollection<TaskObject> _nonWorkingTasks = new ObservableCollection<TaskObject>();
         public ObservableCollection<TaskObject> NonWorkingTasks
         {
@@ -285,10 +302,10 @@ namespace DataSource
             //last modified updated
         }
 
-        public static void MoveTaskById(string id, int level)
-        {
-            NodeManager.MoveTask(level, FindObjectById(id));
-        }
+        //public static void MoveTaskById(string id, int level)
+        //{
+        //    NodeManager.MoveTask(level, FindObjectById(id));
+        //}
 
         public static void AddLevel(int indexToAddAt)
         {

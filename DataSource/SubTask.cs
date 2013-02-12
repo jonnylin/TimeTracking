@@ -9,6 +9,14 @@ namespace DataSource
 {
     public class TaskObject : EntityBase, IDataModel
     {
+        public bool IsCat
+        {
+            get
+            {
+                return (AppDataSource.FindTaskObject(this.UniqueId).hierarchyObj.Parent == null);
+            }
+        }
+
         public bool IsVisible { get; set; }
 
         public TimeEntryCollection TimeEntryCollection { get { return AppDataSource.GetCurrentObject().TaskCollection.GetCollectionById(UniqueId); } }
@@ -35,7 +43,22 @@ namespace DataSource
 
         public bool Finished { get; set; }
         public DateTime LastModified { get; set; }
-        public bool Deleted { get; set; }
+
+        private bool _deleted;
+        public bool Deleted
+        {
+            get { return _deleted; }
+            set
+            {
+                _deleted = value;
+
+                if (this._deleted)
+                {
+                    this.IsVisible = false; 
+                }
+            }
+        }
+
 
         private string _comment;
         public string Comment { get { return _comment; } set { SetProperty(ref _comment, value); } }

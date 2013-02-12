@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataSource
 {
@@ -24,6 +20,7 @@ namespace DataSource
         {
             get { return _allLevels; }
         }
+
 
         public bool AddLevel(int index)
         {
@@ -93,7 +90,7 @@ namespace DataSource
                             HierarchyTaskObject TO = new HierarchyTaskObject(Guid.NewGuid().ToString(), taskRelations.Name+taskToAdd.Name);
                             TO.hierarchyObj = taskRelations;
                             TO.taskObj = taskToAdd;
-                            levelToAddTo.LevelCollection.Add(TO);
+                            AddToLevel(levelToAddTo, TO);
                             added = true;
                             break;
                         }
@@ -101,6 +98,26 @@ namespace DataSource
                 }
             }
             return added;
+        }
+
+        private static void AddToLevel(LevelObject levelToAddTo, HierarchyTaskObject TO)
+        {
+            levelToAddTo.VisibleLevelCollection.Add(TO);
+            levelToAddTo.LevelCollection.Add(TO);
+        }
+
+        public void UpdateVisibility()
+        {
+            foreach (LevelObject levelObject in GetAllLevels)
+            {
+                foreach (HierarchyTaskObject hierarchyTaskObject in levelObject.VisibleLevelCollection)
+                {
+                    if (!hierarchyTaskObject.taskObj.IsVisible)
+                    {
+                        levelObject.VisibleLevelCollection.Remove(hierarchyTaskObject);
+                    }
+                }
+            }
         }
 
         public bool RemoveTaskNode(HierarchyTaskObject taskToRemove)
@@ -118,6 +135,7 @@ namespace DataSource
                         {
                             //element.LevelCollection.Remove(taskToRemove);
                             taskToRemove.taskObj.Deleted = true;
+                            UpdateVisibility();
                             removed = true;
                             break;
                         }
@@ -141,52 +159,52 @@ namespace DataSource
             return removed;
         }
 
-        public bool MoveTask(int levelIndex, HierarchyTaskObject taskToMove)
-        {
-            bool validMove = true;
-            for (int i = levelIndex-1; i < _allLevels.Count; i++)
-            {
-                for (int x = 0; x < _allLevels[i].LevelCollection.Count; x++)
-                {
-                    if ((taskToMove.hierarchyObj.Parent != null 
-                        && _allLevels[i].LevelCollection[x]!=null 
-                        && _allLevels[i].LevelCollection[x].hierarchyObj.CurrentNode.UniqueId.Equals(taskToMove.hierarchyObj.Parent.UniqueId))
-                        || (_allLevels[i].LevelCollection[x]!=null 
-                        && _allLevels[i].LevelCollection[x].hierarchyObj.Parent!=null 
-                        &&_allLevels[i].LevelCollection[x].hierarchyObj.Parent.UniqueId.Equals(taskToMove.hierarchyObj.CurrentNode.UniqueId)))
-                        {
-                            validMove = false;
-                            break;
-                        }
-                }
-                if (validMove == false)
-                {
-                    break;
-                }
-            }
-            if (validMove == true)
-            {
-                bool removed = false;
-                foreach (LevelObject level in _allLevels)
-                {
-                    foreach (HierarchyTaskObject taskObj in level.LevelCollection)
-                    {
-                        if (taskObj.taskObj.UniqueId.Equals(taskToMove.taskObj.UniqueId))
-                        {
-                            level.LevelCollection.Remove(taskObj);
-                            removed = true;
-                            break;
-                        }
-                    }
-                    if (removed == true)
-                    {
-                        break;
-                    }
-                }
-                _allLevels[levelIndex-1].LevelCollection.Add(taskToMove);
-            }
-            return validMove;
-        }
+        //public bool MoveTask(int levelIndex, HierarchyTaskObject taskToMove)
+        //{
+        //    bool validMove = true;
+        //    for (int i = levelIndex-1; i < _allLevels.Count; i++)
+        //    {
+        //        for (int x = 0; x < _allLevels[i].LevelCollection.Count; x++)
+        //        {
+        //            if ((taskToMove.hierarchyObj.Parent != null 
+        //                && _allLevels[i].LevelCollection[x]!=null 
+        //                && _allLevels[i].LevelCollection[x].hierarchyObj.CurrentNode.UniqueId.Equals(taskToMove.hierarchyObj.Parent.UniqueId))
+        //                || (_allLevels[i].LevelCollection[x]!=null 
+        //                && _allLevels[i].LevelCollection[x].hierarchyObj.Parent!=null 
+        //                &&_allLevels[i].LevelCollection[x].hierarchyObj.Parent.UniqueId.Equals(taskToMove.hierarchyObj.CurrentNode.UniqueId)))
+        //                {
+        //                    validMove = false;
+        //                    break;
+        //                }
+        //        }
+        //        if (validMove == false)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    if (validMove == true)
+        //    {
+        //        bool removed = false;
+        //        foreach (LevelObject level in _allLevels)
+        //        {
+        //            foreach (HierarchyTaskObject taskObj in level.LevelCollection)
+        //            {
+        //                if (taskObj.taskObj.UniqueId.Equals(taskToMove.taskObj.UniqueId))
+        //                {
+        //                    level.LevelCollection.Remove(taskObj);
+        //                    removed = true;
+        //                    break;
+        //                }
+        //            }
+        //            if (removed == true)
+        //            {
+        //                break;
+        //            }
+        //        }
+        //        _allLevels[levelIndex-1].LevelCollection.Add(taskToMove);
+        //    }
+        //    return validMove;
+        //}
 
         public void UpdateLevelLabel()
         {

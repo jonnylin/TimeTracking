@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace DataSource
 {
-    public class LevelObject: EntityBase
+    public class LevelObject : EntityBase
     {
         private ObservableCollection<HierarchyTaskObject> _levelCollection;
 
@@ -16,6 +10,26 @@ namespace DataSource
         {
             get { return _levelCollection; }
             set { _levelCollection = value; }
+        }
+
+        private ObservableCollection<HierarchyTaskObject> _visibleLevelCollection = new ObservableCollection<HierarchyTaskObject>();
+
+        public ObservableCollection<HierarchyTaskObject> VisibleLevelCollection
+        {
+            get
+            {
+                _visibleLevelCollection.Clear();
+
+                foreach (HierarchyTaskObject hierarchyTaskObject in _levelCollection)
+                {
+                    if (hierarchyTaskObject.taskObj.IsVisible)
+                    {
+                        _visibleLevelCollection.Add(hierarchyTaskObject);
+                    }
+                }
+
+                return _visibleLevelCollection;
+            }
         }
 
         public LevelObject(string uniqueid, string name)
@@ -31,23 +45,34 @@ namespace DataSource
             {
                 foreach (HierarchyTaskObject item in _levelCollection)
                 {
-                    if (item.hierarchyObj!=null && item.taskObj!=null) 
+                    if (item.hierarchyObj != null && item.taskObj != null)
                     {
-                        if (!item.hierarchyObj.UniqueId.Equals(addition.hierarchyObj.UniqueId) 
+                        if (!item.hierarchyObj.UniqueId.Equals(addition.hierarchyObj.UniqueId)
                             && !item.taskObj.UniqueId.Equals(addition.taskObj.UniqueId))
                         {
-                            _levelCollection.Add(addition);
-                            added = true;
+                            added = AddItem(addition);
                         }
                     }
                 }
             }
             else
             {
-                _levelCollection.Add(addition);
-                added = true;
+                added = AddItem(addition);
             }
+
             return added;
+        }
+
+        private bool AddItem(HierarchyTaskObject addition)
+        {
+            _levelCollection.Add(addition);
+
+            if (addition.taskObj.IsVisible)
+            {
+                _visibleLevelCollection.Add(addition);
+            }
+
+            return true;
         }
 
         public bool RemoveFromCollection(HierarchyTaskObject remove)
@@ -55,6 +80,10 @@ namespace DataSource
             bool removed = false;
             if (_levelCollection.Count > 0)
             {
+                if (_visibleLevelCollection.Contains(remove))
+                {
+                    _visibleLevelCollection.Remove(remove);
+                }
                 _levelCollection.Remove(remove);
                 removed = true;
             }
