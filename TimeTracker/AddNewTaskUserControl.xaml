@@ -1,0 +1,65 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TimeTracker"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:DataSource="using:DataSource"
+    xmlns:Common="using:DataSource.Common"
+    x:Class="TimeTracker.AddNewTaskUserControl"
+    mc:Ignorable="d"
+    d:DesignHeight="400"
+    d:DesignWidth="600">
+	<UserControl.Resources>
+		<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+		<DataTemplate x:Key="CategoryTemplate">
+			<Grid>
+				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding taskObj.Name}" VerticalAlignment="Top" FontSize="13.333"/>
+			</Grid>
+		</DataTemplate>
+	</UserControl.Resources>
+    
+    <StackPanel Orientation="Vertical" x:Name="stack" HorizontalAlignment="Center" >
+		<TextBlock Text="New Task" Foreground="Black" FontSize="26.667" HorizontalAlignment="Left" Margin="0,0,0,10" FontFamily="Segoe UI" />
+		<Grid Height="40" Width="600" Margin="0,0,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="180"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<TextBlock Text="Task Name" Foreground="Black" FontSize="21.333" VerticalAlignment="Center" FontFamily="Segoe UI" />
+			<TextBox x:Name="nameBox" Grid.Column="1" VerticalAlignment="Center" Foreground="Black"/>
+		</Grid>
+		<Grid Height="40" Width="600" Margin="0,0,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="180"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<TextBlock Text="Comment" Foreground="Black" FontSize="21.333" VerticalAlignment="Center" FontFamily="Segoe UI" />
+			<TextBox x:Name="commentBox" Grid.Column="1" VerticalAlignment="Center" Foreground="Black"/>
+		</Grid>
+		<Grid Height="40" Width="600" Margin="0,0,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="180"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<CheckBox x:Name="workingTask" Content="Working Task" VerticalAlignment="Stretch" Grid.Column="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+		</Grid>
+		<Grid Height="40" Width="600" Margin="0,0,0,10" Visibility="Collapsed">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="180"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<TextBlock Text="Level" Foreground="Black" FontSize="21.333" VerticalAlignment="Center" FontFamily="Segoe UI" />
+			<TextBox x:Name="levelBox" Grid.Column="1" VerticalAlignment="Center" Foreground="Black" Text="1"/>
+		</Grid>
+		<Grid Height="40" Width="600" Margin="0,0,0,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="180"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<TextBlock Text="Category" Foreground="Black" FontSize="21.333" VerticalAlignment="Center" FontFamily="Segoe UI" />
+			<ComboBox x:Name="categoryComboBox" Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" ItemTemplate="{StaticResource CategoryTemplate}"/>
+		</Grid>
+
+	</StackPanel>
+</UserControl>
