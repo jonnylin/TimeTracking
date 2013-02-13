@@ -29,6 +29,11 @@ namespace TimeTracker
         void AddNewTaskUserControl_Loaded(object sender, RoutedEventArgs e)
         {
             categoryComboBox.DataContext = AppDataSource.CurrentObject;
+
+            if (categoryComboBox.Items.Count > 0)
+            {
+                categoryComboBox.SelectedIndex = 0;
+            }
         }
 
         public string NewWorkingTask(object sender, RoutedEventArgs e)
@@ -51,5 +56,6 @@ namespace TimeTracker
 
             return id;
         }
+
     }
 }

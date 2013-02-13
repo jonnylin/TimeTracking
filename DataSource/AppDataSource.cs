@@ -32,6 +32,20 @@ namespace DataSource
             set { _runningTaskManager = value; }
         }
 
+        private DayManager _dayManager;
+        public DayManager DayManager
+        {
+            get
+            {
+                if (_dayManager == null)
+                {
+                    _dayManager = new DayManager();
+                }
+                return _dayManager;
+            }
+            set { _dayManager = value; }
+        }
+
         private TaskCollection _taskCollection;
         public TaskCollection TaskCollection
         {
@@ -113,40 +127,6 @@ namespace DataSource
         public static bool IsTaskWorking(string id)
         {
             return GetTaskObjectById(id).IsWorking;
-        }
-
-        private ObservableCollection<Day> _allDays;
-        public ObservableCollection<Day> AllDays
-        {
-            get
-            {
-                if (_allDays == null)
-                {
-                    _allDays = new ObservableCollection<Day>();
-                }
-                return this._allDays;
-            }
-        }
-
-        public static Day GetTodayObject()
-        {
-            return _appDataSource.Today;
-        }
-
-        private Day _today;
-        public Day Today
-        {
-            get
-            {
-                if (_today == null)
-                {
-                    _today = new Day();
-
-                    this.AllDays.Add(_today);
-                }
-                return _today;
-            }
-            set { _today = value; }
         }
 
         public static TaskObject GetTaskObjectById(string id)
@@ -400,7 +380,7 @@ namespace DataSource
             NodeManager.AddLevel(0);
             NodeManager.AddLevel(1);
 
-            AddTask("No Category", false, 1, "No Category assigned", true, "noCat");
+            AddTask("No Category", false, 1, "Tasks with no category assigned", true, "noCat");
             AddTask("Non Working Task", false, 1, "No active tasks", true, "nwt", false);
             AddTask("Time Tracker App", false, 1, "Very Important Project", true);
             AddTask("Time Tracker App", false, 1, "Very Important Project", true);

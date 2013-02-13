@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TimeTracker.Common;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -20,14 +19,14 @@ namespace TimeTracker
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class SummaryPage : TimeTracker.Common.LayoutAwarePage
+    public sealed partial class DayBreakdown : TimeTracker.Common.LayoutAwarePage
     {
-        public SummaryPage()
+        public DayBreakdown()
         {
             this.InitializeComponent();
         }
 
-       /// <summary>
+        /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
         /// </summary>
@@ -48,21 +47,6 @@ namespace TimeTracker
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
-        }
-
-        private void NavTaskPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(TaskList));
-        }
-
-        private void NavListPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ItemsPage));
-        }
-
-        private void NavDayBreakdownPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(DayBreakdown));
         }
     }
 }

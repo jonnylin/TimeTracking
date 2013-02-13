@@ -38,7 +38,7 @@ namespace DataSource
 
             AppDataSource.CurrentObject.TaskCollection.AddToCollection(_timeManager.RunningTimeEntry);
 
-            AppDataSource.CurrentObject.Today.TimeEntriesInADay.Add(_timeManager.RunningTimeEntry);
+            AppDataSource.CurrentObject.DayManager.Today.TimeEntriesInADay.Add(_timeManager.RunningTimeEntry);
         }
 
         public static void StartTimerById(string id)

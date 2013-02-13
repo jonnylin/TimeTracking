@@ -25,6 +25,8 @@ namespace DataSource
                     }
                 }
 
+                if (CurrentNode.TimeEntryCollection != null) timeSpan += CurrentNode.TimeEntryCollection.TotalTime;
+
                 return timeSpan;
             }
         }

@@ -397,6 +397,26 @@ namespace TimeTracker.Common
         {
         }
 
+
+        protected void NavStatsPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SummaryPage));
+        }
+
+        protected void NavListPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ItemsPage));
+        }
+
+        protected void NavTaskPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(TaskList));
+        }
+
+        protected void NavDayBreakdownPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(DayBreakdown));
+        }
         #endregion
 
         /// <summary>

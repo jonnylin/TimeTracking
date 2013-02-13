@@ -15,6 +15,11 @@ namespace DataSource
 
         public string UniqueId { get; set; }
 
+        public string TaskName 
+        { 
+            get { return AppDataSource.GetTaskObjectById(this.UniqueId).Name; }
+        }
+
         public string Comment { get; set; }
 
         public void SetTimeTaken(DateTime newTime)

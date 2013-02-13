@@ -45,10 +45,17 @@
     </common:LayoutAwarePage.Resources>
 	<common:LayoutAwarePage.BottomAppBar>
 		<AppBar>
-			<StackPanel Height="100" Orientation="Horizontal">
-				<Button AutomationProperties.Name="start task" Content="&#xE102;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="StartTaskClick"/>
-				<Button AutomationProperties.Name="add task" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddTaskClick"/>
-			</StackPanel>
+			<Grid>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+					<Button AutomationProperties.Name="start task" Content="&#xE102;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="StartTaskClick"/>
+					<Button AutomationProperties.Name="add task" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddTaskClick"/>
+				</StackPanel>
+				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+					<Button  AutomationProperties.Name="list view" Content="&#xE10F;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavListPage"/>
+					<Button  AutomationProperties.Name="stats view" Content="&#xE121;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavStatsPage"/>
+					<Button  AutomationProperties.Name="Day Breakdown" Content="&#xE1DC;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavDayBreakdownPage"/>
+				</StackPanel>
+			</Grid>
 		</AppBar>
 	</common:LayoutAwarePage.BottomAppBar>
 
@@ -161,7 +168,7 @@
 					<TextBlock TextWrapping="Wrap" Text="No active tasks running, please choose a task from the list below to start" Visibility="{Binding RunningTaskManager.ShowHelpText, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="24" Foreground="#FF818181"/>
 					<ListView x:Name="RunningTaskListView" ItemsSource="{Binding Source={StaticResource currentTaskViewSource}}" ItemTemplate="{StaticResource TaskListTemplate}" SelectionChanged="ListBox_SelectionChanged_1" SelectionMode="None" Margin="0,0,0,30" />
 					<TextBlock TextWrapping="Wrap" Text="Other Tasks" FontSize="29.333" Margin="0,0,0,10"/>
-					<TextBlock TextWrapping="Wrap" Text="No tasks available, please add tasks to categories first" Visibility="{Binding RunningTaskManager.ShowHelpText, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="24" Foreground="#FF818181"/>
+					<TextBlock TextWrapping="Wrap" Text="No tasks available, please add tasks to categories first" Visibility="{Binding RunningTaskManager.ShowHelpTextTasks, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="24" Foreground="#FF818181"/>
 					<ListView x:Name="OtherTaskListView" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" ItemTemplate="{StaticResource TaskListTemplate}" SelectionChanged="ListBox_SelectionChanged_1" SelectionMode="None"/>
 				</StackPanel>
 

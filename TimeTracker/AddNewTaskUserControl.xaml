@@ -1,11 +1,8 @@
 ﻿<UserControl
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TimeTracker"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:DataSource="using:DataSource"
-    xmlns:Common="using:DataSource.Common"
     x:Class="TimeTracker.AddNewTaskUserControl"
     mc:Ignorable="d"
     d:DesignHeight="400"

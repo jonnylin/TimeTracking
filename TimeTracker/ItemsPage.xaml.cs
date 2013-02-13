@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using TimeTracker.Data;
 
 using System;
 using System.Collections.Generic;
@@ -33,9 +32,6 @@ namespace TimeTracker
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroups = SampleDataSource.GetGroups((String)navigationParameter);
-            this.DefaultViewModel["Items"] = sampleDataGroups;
         }
 
         private void HidePopUp()
@@ -136,11 +132,6 @@ namespace TimeTracker
                         }
                 }
             }
-        }
-
-        private void NavStatsPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(SummaryPage));
         }
 
         private void StartTaskBtnClick(object sender, RoutedEventArgs e)
