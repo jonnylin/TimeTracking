@@ -151,12 +151,12 @@
         				</StackPanel>
         			</Grid>
         		</StackPanel>
-        		<ListView ItemsSource="{Binding NodeManager.GetAllLevels[0].LevelCollection}" ItemTemplate="{StaticResource EntryCollectionItemTemplate}" Margin="0,0,0,20" SelectionMode="None">
+        		<ListView ItemsSource="{Binding NodeManager.GetAllLevels[0].VisibleLevelCollection}" ItemTemplate="{StaticResource EntryCollectionItemTemplate}" Margin="0,0,0,20" SelectionMode="None">
         			<ListView.DataContext>
         				<DataSource:AppDataSource/>
         			</ListView.DataContext>
         		</ListView>
-        		<ListView ItemsSource="{Binding AllDays}" ItemTemplate="{StaticResource AllDaysTemplate}">
+        		<ListView ItemsSource="{Binding AllDays}" ItemTemplate="{StaticResource AllDaysTemplate}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
         			<ListView.DataContext>
         				<DataSource:AppDataSource/>
         			</ListView.DataContext>

@@ -331,11 +331,6 @@ namespace TimeTracker.Common
         /// property provides the group to be displayed.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (AppDataSource.GetTaskObjectById("nwt") == null)
-            {
-                AppDataSource.AddTask("Non Working Task", false, 1, "No active tasks", true, "nwt", false);
-            }
-
             // Returning to a cached page through navigation shouldn't trigger state loading
             if (this._pageKey != null) return;
 

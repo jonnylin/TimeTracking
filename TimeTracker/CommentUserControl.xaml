@@ -6,16 +6,17 @@
     x:Class="TimeTracker.CommentUserControl"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" Width="500" Height="200">
+    d:DesignWidth="600" >
     
 	<UserControl.DataContext>
 		<DataSource:TimeEntry/>
 	</UserControl.DataContext>
     
-    <Border x:Name="commentPopup" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Background="White" Padding="5">
+    <Border x:Name="commentPopup" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Background="White" Padding="0">
 		<StackPanel>
-			<TextBlock TextWrapping="Wrap" Text="Would you like to add a comment for the time entry?" FontSize="18.667" Margin="10,10,10,20"/>
-			<TextBox x:Name="commentBox" TextWrapping="Wrap" Margin="10,0" Foreground="Black" Height="90" />
+			<TextBlock x:Name="TaskText" TextWrapping="Wrap" Text="Would you like to add a comment for the last time entry?" FontSize="18.667"/>
+			<TextBlock TextWrapping="Wrap" Text="If no tasks were running, briefly explain (eg, out for lunch)" Foreground="#FF7E7E7E" FontSize="13.333"/>
+			<TextBox x:Name="commentBox" TextWrapping="Wrap" Foreground="Black" Height="90" Margin="0,10,0,0" />
 		</StackPanel>
 	</Border>
 </UserControl>

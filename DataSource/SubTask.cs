@@ -54,8 +54,16 @@ namespace DataSource
 
                 if (this._deleted)
                 {
-                    this.IsVisible = false; 
+                    this.IsVisible = false;
                 }
+            }
+        }
+
+        public string Parent
+        {
+            get
+            {
+                return (from hierachyTaskObject in AppDataSource.NodeManager.GetAllLevels[1].LevelCollection where hierachyTaskObject.taskObj.UniqueId == this.UniqueId select hierachyTaskObject.hierarchyObj.Parent.Name).FirstOrDefault();
             }
         }
 
@@ -83,10 +91,5 @@ namespace DataSource
         {
             return true;
         }
-
-        //public TimeSpan TotalTime()
-        //{
-        //    return ;
-        //}
     }
 }

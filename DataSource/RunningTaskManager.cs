@@ -1,14 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DataSource.Common;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataSource
 {
-    public class RunningTaskManager
+    public class RunningTaskManager : BindableBase
     {
+        private bool _showHelpText = true;
+        public bool ShowHelpText
+        {
+            get { return _showHelpText; }
+            set { SetProperty(ref _showHelpText, value); }
+        }
+
+        private bool _showHelpTextTasks = true;
+        public bool ShowHelpTextTasks
+        {
+            get { return _showHelpText; }
+            set { SetProperty(ref _showHelpTextTasks, value); }
+        }
+
         private ObservableCollection<TaskObject> _runningTasks = new ObservableCollection<TaskObject>();
         public ObservableCollection<TaskObject> RunningTasks
         {
@@ -21,34 +31,48 @@ namespace DataSource
 
         public void UpdateTask(TaskObject taskObject)
         {
-            if (taskObject.Deleted)
+            ShowHelpText = true;
+
+            if (taskObject.IsVisible && !taskObject.IsCat)
             {
-                NotRunningTasks.Remove(taskObject);
-                RunningTasks.Remove(taskObject);
-            }
-            else
-            {
-                if (taskObject.IsRunning)
+                ShowHelpText = false;
+
+                if (taskObject.Deleted)
                 {
-                    if (!RunningTasks.Contains(taskObject))
-                    {
-                        RunningTasks.Add(taskObject);
-                    }
-                    if (NotRunningTasks.Contains(taskObject))
-                    {
-                        NotRunningTasks.Remove(taskObject);
-                    }
+                    NotRunningTasks.Remove(taskObject);
+                    RunningTasks.Remove(taskObject);
                 }
                 else
                 {
-                    if (!NotRunningTasks.Contains(taskObject))
-                    {
-                        NotRunningTasks.Add(taskObject);
-                    }
-                    if (RunningTasks.Contains(taskObject))
-                    {
-                        RunningTasks.Remove(taskObject);
-                    }
+                    UpdateLists(taskObject);
+                }
+            }
+
+            ShowHelpTextTasks = NotRunningTasks.Count == 0;
+        }
+
+        private void UpdateLists(TaskObject taskObject)
+        {
+            if (taskObject.IsRunning)
+            {
+                if (!RunningTasks.Contains(taskObject))
+                {
+                    RunningTasks.Add(taskObject);
+                }
+                if (NotRunningTasks.Contains(taskObject))
+                {
+                    NotRunningTasks.Remove(taskObject);
+                }
+            }
+            else
+            {
+                if (!NotRunningTasks.Contains(taskObject))
+                {
+                    NotRunningTasks.Add(taskObject);
+                }
+                if (RunningTasks.Contains(taskObject))
+                {
+                    RunningTasks.Remove(taskObject);
                 }
             }
         }

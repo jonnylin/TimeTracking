@@ -85,7 +85,7 @@ namespace TimeTracker
         private void ShowPopUp(PopUpType popUpType)
         {
             normalControl.IsEnabled = false;
-            this.Opacity = .4;
+            this.Opacity = .3;
             popupControl.IsEnabled = true;
             logincontrol1.IsOpen = true;
             pop.Width = Window.Current.Bounds.Width;
@@ -130,15 +130,8 @@ namespace TimeTracker
         {
             TaskObject selectedObject = (sender as Button).DataContext as TaskObject;
 
-            if (selectedObject.IsRunning)
-            {
-                ShowPopUp(PopUpType.AddComment);
-                CommentUserControl.DataContext = selectedObject;
-            }
-            else
-            {
-                NewTimeEntryObject(selectedObject.UniqueId);
-            }
+            ShowPopUp(PopUpType.AddComment);
+            CommentUserControl.DataContext = selectedObject;
         }
 
         private void NewTimeEntryObject(string id)
@@ -161,15 +154,18 @@ namespace TimeTracker
             UpdatePopupBoxContent(PopUpType.NewTask);
         }
 
-        private void StartTaskBtnClick(object sender, RoutedEventArgs e)
+        private async void StartTaskBtnClick(object sender, RoutedEventArgs e)
         {
             try
             {
+                MessageBoxResult messageBoxResult = new MessageBoxResult();
                 string newTaskId;
 
                 if (newTaskUserControl.Visibility == Visibility.Visible)
                 {
                     newTaskId = newTaskUserControl.NewWorkingTask(sender, e);
+
+                    messageBoxResult = await MessageBox.ShowAsync("Would you like to start this task now?", "Task Added", MessageBoxButton.YesNo);
                 }
                 else
                 {
@@ -178,7 +174,11 @@ namespace TimeTracker
                     newTaskId = selectedTask.UniqueId;
                 }
 
-                NewTimeEntryObject(newTaskId);
+                if (messageBoxResult != MessageBoxResult.No)
+                {
+                    NewTimeEntryObject(newTaskId); 
+                }
+
                 HidePopUp();
             }
             catch (Exception)
@@ -217,7 +217,17 @@ namespace TimeTracker
 
         private void CollapseCommentBox()
         {
-            PauseTask();
+            TaskObject selectedObject = CommentUserControl.DataContext as TaskObject;
+
+            if (selectedObject.IsRunning)
+            {
+                PauseTask();
+            }
+            else
+            {
+                NewTimeEntryObject(selectedObject.UniqueId);
+            }
+
             HidePopUp();
         }
     }

@@ -18,14 +18,21 @@ namespace DataSource
         private static Guid guid { get; set; }
         public static HierarchyManager NodeManager { get; set; }
 
-        private RunningTaskManager _runningTaskManager = new RunningTaskManager();
+        private RunningTaskManager _runningTaskManager;
         public RunningTaskManager RunningTaskManager
         {
-            get { return _runningTaskManager; }
+            get
+            {
+                if (_runningTaskManager == null)
+                {
+                    _runningTaskManager = new RunningTaskManager();
+                }
+                return _runningTaskManager;
+            }
             set { _runningTaskManager = value; }
         }
 
-        private TaskCollection _taskCollection = new TaskCollection();
+        private TaskCollection _taskCollection;
         public TaskCollection TaskCollection
         {
             get
@@ -52,12 +59,12 @@ namespace DataSource
             }
         }
 
-        private ObservableCollection<TaskObject> _visibleTasks = new ObservableCollection<TaskObject>();
+        private ObservableCollection<TaskObject> _visibleTasks;
         public ObservableCollection<TaskObject> VisibleTasks
         {
             get
             {
-                this._visibleTasks.Clear();
+                this._visibleTasks = new ObservableCollection<TaskObject>();
 
                 foreach (var item in AppDataSource.TotalTasks.Where(t => t.IsVisible == true))
                 {
@@ -69,12 +76,12 @@ namespace DataSource
             set { this._visibleTasks = value; }
         }
 
-        private ObservableCollection<TaskObject> _nonWorkingTasks = new ObservableCollection<TaskObject>();
+        private ObservableCollection<TaskObject> _nonWorkingTasks;
         public ObservableCollection<TaskObject> NonWorkingTasks
         {
             get
             {
-                this._nonWorkingTasks.Clear();
+                this._nonWorkingTasks = new ObservableCollection<TaskObject>();
 
                 foreach (var item in AppDataSource.TotalTasks.Where(t => t.IsWorking == false))
                 {
@@ -86,12 +93,12 @@ namespace DataSource
             set { this._nonWorkingTasks = value; }
         }
 
-        private ObservableCollection<TaskObject> _workingTasks = new ObservableCollection<TaskObject>();
+        private ObservableCollection<TaskObject> _workingTasks;
         public ObservableCollection<TaskObject> WorkingTasks
         {
             get
             {
-                this._workingTasks.Clear();
+                this._workingTasks = new ObservableCollection<TaskObject>();
 
                 foreach (var item in AppDataSource.TotalTasks.Where(t => t.IsWorking == true))
                 {
@@ -108,10 +115,17 @@ namespace DataSource
             return GetTaskObjectById(id).IsWorking;
         }
 
-        private ObservableCollection<Day> _allDays = new ObservableCollection<Day>();
+        private ObservableCollection<Day> _allDays;
         public ObservableCollection<Day> AllDays
         {
-            get { return this._allDays; }
+            get
+            {
+                if (_allDays == null)
+                {
+                    _allDays = new ObservableCollection<Day>();
+                }
+                return this._allDays;
+            }
         }
 
         public static Day GetTodayObject()
@@ -144,14 +158,6 @@ namespace DataSource
             }
             return null;
         }
-
-        //public static List<TaskObject> FinishedTasks
-        //{
-        //    get
-        //    {
-        //        return AppDataSource.TotalTasks.Where(task => task.Finished == true).ToList();
-        //    }
-        //}
 
         public static string AddTask(string taskName, bool working, int level, string comment, bool isCategory, string id = null, bool isVisible = true)
         {
@@ -393,10 +399,22 @@ namespace DataSource
             NodeManager = new HierarchyManager(Guid.NewGuid().ToString(), "HierarchyManager", guid);
             NodeManager.AddLevel(0);
             NodeManager.AddLevel(1);
-            //TotalTasks.Clear();
-            AddTask("No Category", false, 1, "No Category assigned", true, "noCat");
 
-            //AddTask(new TaskObject("Non Working Task", "nwt", "No active tasks", false),);
+            AddTask("No Category", false, 1, "No Category assigned", true, "noCat");
+            AddTask("Non Working Task", false, 1, "No active tasks", true, "nwt", false);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+            AddTask("Time Tracker App", false, 1, "Very Important Project", true);
+
+
+            TimeManager.StartTimerById("nwt");
             //AddTask("Non Working Task", false, 1, "No active tasks", "nwt");
             //AddTask(new TaskObject("Lunch", "lunch", "Yum", false));
             //AddTask(new TaskObject("End of day", "eod", "Xbox!", false));

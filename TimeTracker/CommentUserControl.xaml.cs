@@ -23,8 +23,6 @@ namespace TimeTracker
             TimeEntry timeEntry = TimeManager.GetCurrentObject().RunningTimeEntry;
 
             timeEntry.Comment = commentBox.Text;
-
-            thisControl.Visibility = Visibility.Collapsed;
         }
     }
 }
