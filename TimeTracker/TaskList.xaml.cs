@@ -15,7 +15,7 @@ namespace TimeTracker
     /// </summary>
     public sealed partial class TaskList : TimeTracker.Common.LayoutAwarePage
     {
-        private bool isFromAppBar = false;
+        private bool _isFromAppBar = false;
 
         private enum PopUpType
         {
@@ -76,7 +76,7 @@ namespace TimeTracker
 
         public void HidePopUp()
         {
-            isFromAppBar = false;
+            _isFromAppBar = false;
             normalControl.IsEnabled = true;
             this.Opacity = 1;
             popupControl.IsEnabled = false;
@@ -148,7 +148,7 @@ namespace TimeTracker
 
         private void Cancel(object sender, RoutedEventArgs e)
         {
-            if (!isFromAppBar)
+            if (!_isFromAppBar)
             {
                 TimeManager.StartNonWorkingTask();
             }
@@ -183,7 +183,7 @@ namespace TimeTracker
         {
             ShowPopUp(PopUpType.NewTask);
 
-            isFromAppBar = true;
+            _isFromAppBar = true;
             BottomAppBar.IsOpen = false;
         }
 
@@ -191,7 +191,7 @@ namespace TimeTracker
         {
             ShowPopUp(PopUpType.StartTask);
 
-            isFromAppBar = true;
+            _isFromAppBar = true;
             BottomAppBar.IsOpen = false;
         }
 
