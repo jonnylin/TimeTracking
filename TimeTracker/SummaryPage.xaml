@@ -12,6 +12,8 @@
 
     <common:LayoutAwarePage.Resources>
 
+    	<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
         <DataTemplate x:Key="DataTemplate3">
         	<StackPanel><TextBlock TextWrapping="Wrap" Text="{Binding Name}" FontSize="16"/>
 <TextBlock TextWrapping="Wrap" Text="{Binding Comment}" Margin="0"/>
@@ -26,20 +28,23 @@
         	</StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="EntryCollectionItemTemplate">
-        	<StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#89DEF8FF">
-        		<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Name}" FontSize="26.667" HorizontalAlignment="Left" Height="36"/>
-        		<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Comment}" Margin="0"/>
-        		<ListView HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemsSource="{Binding hierarchyObj.Children}" ItemTemplate="{StaticResource DataTemplate3}" SelectionMode="None" Margin="20" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-        		<StackPanel Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Right" Height="36">
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Total Time: " VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Hours, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="hours," VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Minutes, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="minutes," VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Seconds, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
-        			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="seconds" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        	<Grid>
+        		<StackPanel ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#41DEF8FF">
+        			<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Name}" FontSize="26.667" HorizontalAlignment="Left" Height="36"/>
+        			<TextBlock TextWrapping="Wrap" Text="{Binding taskObj.Comment}" Margin="0"/>
+        			<ListView HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemsSource="{Binding hierarchyObj.Children}" ItemTemplate="{StaticResource DataTemplate3}" SelectionMode="None" Margin="20" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+        			<StackPanel Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Right" Height="36">
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Total Time: " VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Hours, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="hours," VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Minutes, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="minutes," VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding hierarchyObj.TotalTimeTaken.Seconds, Mode=OneWay}" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="seconds" VerticalAlignment="Top" FontSize="21.333" Margin="0,0,5,0" Foreground="#FF098600"/>
+        			</StackPanel>
         		</StackPanel>
-        	</StackPanel>
+        		<Rectangle Fill="#4F000000" Visibility="{Binding taskObj.Deleted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        	</Grid>
         </DataTemplate>
         <DataTemplate x:Key="TImeEntryItemTemplate">
         	<Grid d:DesignWidth="190">

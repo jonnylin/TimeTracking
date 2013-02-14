@@ -81,7 +81,7 @@ namespace TimeTracker
             BottomAppBar.IsOpen = false;
         }
 
-        private  async void DeleteCategory(object sender, RoutedEventArgs e)
+        private async void DeleteCategory(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = await MessageBox.ShowAsync("Are you sure you want to delete the category? All tasks within the category will be ", "Delete Task", MessageBoxButton.YesNo);
 
@@ -140,7 +140,7 @@ namespace TimeTracker
             {
                 if (newTaskUserControl.Visibility == Visibility.Visible)
                 {
-                    newTaskUserControl.NewWorkingTask(sender, e);
+                    newTaskUserControl.AddTask(sender, e);
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace TimeTracker
 
             AppDataSource.ModifyNodeParent(droppedObject.UniqueId, ((sender as Grid).DataContext as HierarchyTaskObject).taskObj.UniqueId);
             //
-        } 
+        }
         #endregion
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataSource
 {
-    public class AppDataSource: IDataModel
+    public class AppDataSource : IDataModel
     {
         private static AppDataSource _appDataSource = new AppDataSource();
         public static AppDataSource CurrentObject
@@ -17,6 +17,20 @@ namespace DataSource
 
         private static Guid guid { get; set; }
         public static HierarchyManager NodeManager { get; set; }
+
+        private TaskManager _taskManager;
+        public TaskManager TaskManager
+        {
+            get
+            {
+                if (_taskManager == null)
+                {
+                    _taskManager = new TaskManager();
+                }
+                return _taskManager;
+            }
+            set { _taskManager = value; }
+        }
 
         private RunningTaskManager _runningTaskManager;
         public RunningTaskManager RunningTaskManager
@@ -148,7 +162,15 @@ namespace DataSource
                 newID = Guid.NewGuid().ToString();
             }
 
-            TaskObject taskCreated = new TaskObject(taskName, newID.ToString(), comment, working,isVisible);
+            TaskObject taskCreated = new TaskObject(taskName, newID.ToString(), comment, working, isVisible);
+            CreateHierachyTaskObject(isCategory, taskCreated);
+            AppDataSource.TotalTasks.Add(taskCreated);
+
+            return taskCreated.UniqueId;
+        }
+
+        public static void CreateHierachyTaskObject(bool isCategory, TaskObject taskCreated)
+        {
             HierarchyObject hierarchyNodeMetaData = new HierarchyObject(Guid.NewGuid().ToString(), "hierarchyObject_", null, taskCreated);
 
             if (isCategory == true)
@@ -159,9 +181,6 @@ namespace DataSource
             {
                 NodeManager.AddTaskNode(hierarchyNodeMetaData, taskCreated, NodeManager.GetAllLevels[1]);
             }
-            AppDataSource.TotalTasks.Add(taskCreated);
-
-            return taskCreated.UniqueId;
         }
 
         public static bool DeleteTask(string taskid)

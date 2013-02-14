@@ -36,25 +36,45 @@ namespace TimeTracker
             }
         }
 
-        public string NewWorkingTask(object sender, RoutedEventArgs e)
+        //public string NewWorkingTask(object sender, RoutedEventArgs e)
+        //{
+        //    string name = nameBox.Text;
+        //    string comment = commentBox.Text;
+        //    bool isWorking = (bool)workingTask.IsChecked;
+        //    int level = int.Parse(levelBox.Text);
+
+        //    HierarchyTaskObject selectedLevel = categoryComboBox.SelectedItem as HierarchyTaskObject;
+
+        //    if (selectedLevel == null)
+        //    {
+        //        selectedLevel = AppDataSource.FindTaskObject("noCat");
+        //    }
+
+        //    string id = Guid.NewGuid().ToString();
+
+        //    AppDataSource.ModifyNodeParent(AppDataSource.AddTask(name, isWorking, level, comment, false, id), selectedLevel.taskObj.UniqueId);
+
+        //    return id;
+        //}
+
+        public void Cancel(object sender, RoutedEventArgs e)
         {
-            string name = nameBox.Text;
-            string comment = commentBox.Text;
-            bool isWorking = (bool)workingTask.IsChecked;
-            int level = int.Parse(levelBox.Text);
+            AppDataSource.CurrentObject.TaskManager.DeleteTempObject();
+        }
 
-            HierarchyTaskObject selectedLevel = categoryComboBox.SelectedItem as HierarchyTaskObject;
+        public void AddTask(object sender, RoutedEventArgs e)
+        {
+            HierarchyTaskObject selectedLevel = (categoryComboBox.SelectedItem as HierarchyTaskObject);
+            string parentId = "noCat";
 
-            if (selectedLevel == null)
+            if (selectedLevel != null)
             {
-                selectedLevel = AppDataSource.FindTaskObject("noCat");
+                parentId = selectedLevel.taskObj.UniqueId;
             }
 
-            string id = Guid.NewGuid().ToString();
+            AppDataSource.CurrentObject.TaskManager.AddTaskObject(parentId);
 
-            AppDataSource.ModifyNodeParent(AppDataSource.AddTask(name, isWorking, level, comment, false, id), selectedLevel.taskObj.UniqueId);
-
-            return id;
+            AppDataSource.CurrentObject.TaskManager.DeleteTempObject();
         }
 
     }

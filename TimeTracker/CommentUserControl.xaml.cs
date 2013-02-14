@@ -1,4 +1,4 @@
-﻿using DataSource;
+﻿ using DataSource;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -20,7 +20,7 @@ namespace TimeTracker
 
         public void SaveComment(object sender, RoutedEventArgs e)
         {
-            TimeEntry timeEntry = TimeManager.GetCurrentObject().RunningTimeEntry;
+            TimeEntry timeEntry = TimeManager.CurrentObject.RunningTimeEntry;
 
             timeEntry.Comment = commentBox.Text;
         }

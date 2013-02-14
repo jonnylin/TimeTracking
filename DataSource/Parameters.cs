@@ -10,5 +10,7 @@ namespace DataSource
     {
         private static string _randomId = new Random(DateTime.UtcNow.Second).ToString();
         public static string randomID { get { return "1"; } }
+
+        public static bool IsEditMode { get; set; }
     }
 }

@@ -126,6 +126,7 @@
     <Compile Include="RunningTaskManager.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="Summary.cs" />
+    <Compile Include="TaskManager.cs" />
     <Compile Include="TimeEntry.cs" />
     <Compile Include="TimeEntryCollection.cs" />
     <Compile Include="TimeManager.cs" />

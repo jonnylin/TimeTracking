@@ -7,9 +7,9 @@ namespace DataSource
     {
         private static TimeManager _timeManager = new TimeManager();
 
-        public static TimeManager GetCurrentObject()
+        public static TimeManager CurrentObject
         {
-            return _timeManager;
+            get { return _timeManager; }
         }
 
         private TimeEntry _runningTimeEntry;

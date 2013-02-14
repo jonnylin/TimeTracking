@@ -13,35 +13,167 @@
 
     <common:LayoutAwarePage.Resources>
 
+    	<common:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
+
+    	<common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    	<common:TimeTakenFormatterConverter x:Key="TimeTakenFormatterConverter"/>
+
+    	<common:TimeFormatterConverter x:Key="TimeFormatterConverter"/>
+
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
-        <DataTemplate x:Key="TimeEntryItemTemplate">
-        	<Border BorderBrush="#FFFF3B3B" BorderThickness="1,0,0,0" Padding="10,0,0,0">
-        		<StackPanel>
-        			<TextBlock TextWrapping="Wrap" Text="{Binding TaskName, Mode=OneWay}" FontSize="13.333"/>
-        			<TextBlock TextWrapping="Wrap" Text="{Binding Comment}"/>
-        			<StackPanel Orientation="Horizontal">
-        				<TextBlock TextWrapping="Wrap" Text="Started at "/>
-        				<TextBlock TextWrapping="Wrap" Text="{Binding StartTime}" Margin="5,0,0,0"/>
-        			</StackPanel>
-        			<StackPanel Orientation="Horizontal">
-        				<TextBlock TextWrapping="Wrap" Text="Time Taken: "/>
-        				<TextBlock TextWrapping="Wrap" Text="{Binding TimeTaken}" Margin="5,0,0,0"/>
-        			</StackPanel>
-        		</StackPanel>
-        	</Border>
-        </DataTemplate>
-        <DataTemplate x:Key="DayItemTemplate">
-        	<Border BorderBrush="#FF0046FF" Padding="10,0,0,0" BorderThickness="2,0,0,0">
-        		<StackPanel>
-        			<StackPanel Orientation="Horizontal">
-        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Date: " VerticalAlignment="Top"/>
-        				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding CreatedTimeString, Mode=OneWay}" VerticalAlignment="Top" Margin="5,0,0,0"/>
-        			</StackPanel>
-        			<ListView Margin="20,10,20,20" ItemsSource="{Binding TimeEntriesInADay}" ItemTemplate="{StaticResource TimeEntryItemTemplate}" SelectionMode="None"/>
-        		</StackPanel>
-        	</Border>
-        </DataTemplate>
+    	<x:String x:Key="AppName">My Application</x:String>
+    	<DataTemplate x:Key="TimeEntryItemTemplate">
+    		<Border BorderBrush="#FFFF3B3B" BorderThickness="1,0,0,0">
+    			<Grid>
+    				<StackPanel Margin="30,0,0,0" HorizontalAlignment="Left">
+    					<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+    						<Grid.ColumnDefinitions>
+    							<ColumnDefinition Width="90"/>
+    							<ColumnDefinition/>
+    						</Grid.ColumnDefinitions>
+    						<TextBlock TextWrapping="Wrap" Text="Task Name"/>
+    						<TextBlock TextWrapping="Wrap" Text="{Binding TaskName, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left"/>
+    					</Grid>
+    					<Grid>
+    						<Grid.ColumnDefinitions>
+    							<ColumnDefinition Width="90"/>
+    							<ColumnDefinition />
+    							<ColumnDefinition/>
+    						</Grid.ColumnDefinitions>
+    						<TextBlock TextWrapping="Wrap" Text="Comment"/>
+    						<TextBox TextWrapping="Wrap" Text="{Binding Comment, Mode=TwoWay}" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=toggleButton}"/>
+    						<TextBlock Text="{Binding Comment, Mode=TwoWay}" Grid.Column="1" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityNegationConverter}, ElementName=toggleButton}"/>
+    					</Grid>
+    					<Grid>
+    						<Grid.ColumnDefinitions>
+    							<ColumnDefinition Width="90"/>
+    							<ColumnDefinition Width="Auto"/>
+    							<ColumnDefinition/>
+    						</Grid.ColumnDefinitions>
+    						<TextBlock TextWrapping="Wrap" Text="Started at"/>
+    						<TextBlock TextWrapping="Wrap" Text="{Binding StartTime, Converter={StaticResource TimeFormatterConverter}}" Grid.Column="1"/>
+    					</Grid>
+    					<Grid>
+    						<Grid.ColumnDefinitions>
+    							<ColumnDefinition Width="90"/>
+    							<ColumnDefinition Width="Auto"/>
+    							<ColumnDefinition/>
+    						</Grid.ColumnDefinitions>
+    						<TextBlock TextWrapping="Wrap" Text="{Binding TimeTaken, Converter={StaticResource TimeTakenFormatterConverter}}" Grid.Column="1"/>
+    						<TextBlock TextWrapping="Wrap" Text="Time Taken"/> 				</Grid>
+    				</StackPanel>
+    				<ToggleButton x:Name="toggleButton" Content="&#xE1C2;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Segoe UI Symbol" Padding="0" IsChecked="{Binding IsEditMode, Mode=TwoWay}" BorderThickness="1">
+    					<ToggleButton.DataContext>
+    						<DataSource:Parameters/>
+    					</ToggleButton.DataContext>
+    				</ToggleButton>
+    			</Grid>
+    		</Border>
+    	</DataTemplate>
+    	<Style x:Key="ListViewItemStyle1" TargetType="ListViewItem">
+    		<Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
+    		<Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
+    		<Setter Property="Background" Value="Transparent"/>
+    		<Setter Property="TabNavigation" Value="Local"/>
+    		<Setter Property="IsHoldingEnabled" Value="True"/>
+    		<Setter Property="Margin" Value="0,0,18,2"/>
+    		<Setter Property="HorizontalContentAlignment" Value="Left"/>
+    		<Setter Property="VerticalContentAlignment" Value="Top"/>
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="ListViewItem">
+    					<Border x:Name="OuterContainer">
+    						<Grid x:Name="ReorderHintContent" Background="Transparent">
+    							<Path x:Name="SelectingGlyph" Data="F1 M133.1,17.9 L137.2,13.2 L144.6,19.6 L156.4,5.8 L161.2,9.9 L145.6,28.4 z" Fill="{StaticResource ListViewItemCheckSelectingThemeBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Height="13" Margin="0,9.5,9.5,0" Opacity="0" Stretch="Fill" VerticalAlignment="Top" Width="15"/>
+    							<Border x:Name="HintGlyphBorder" HorizontalAlignment="Right" Height="40" Margin="4" Opacity="0" VerticalAlignment="Top" Width="40">
+    								<Path x:Name="HintGlyph" Data="F1 M133.1,17.9 L137.2,13.2 L144.6,19.6 L156.4,5.8 L161.2,9.9 L145.6,28.4 z" Fill="{StaticResource ListViewItemCheckHintThemeBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Height="13" Margin="0,5.5,5.5,0" Opacity="0" Stretch="Fill" VerticalAlignment="Top" Width="15"/>
+    							</Border>
+    							<Border x:Name="ContentContainer">
+    								<Grid x:Name="InnerDragContent">
+    									<Rectangle x:Name="PointerOverBorder" Fill="{StaticResource ListViewItemPointerOverBackgroundThemeBrush}" IsHitTestVisible="False" Margin="1" Opacity="0"/>
+    									<Rectangle x:Name="FocusVisual" IsHitTestVisible="False" Opacity="0" Stroke="{StaticResource ListViewItemFocusBorderThemeBrush}" StrokeThickness="2"/>
+    									<Rectangle x:Name="SelectionBackground" Fill="{StaticResource ListViewItemSelectedBackgroundThemeBrush}" Margin="4" Opacity="0"/>
+    									<Border x:Name="ContentBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="4">
+    										<Grid>
+    											<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    											<TextBlock x:Name="PlaceholderTextBlock" Foreground="{x:Null}" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" Opacity="0" Text="Xg"/>
+    											<Rectangle x:Name="PlaceholderRect" Fill="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" IsHitTestVisible="False" Visibility="Collapsed"/>
+    											<Rectangle x:Name="MultiArrangeOverlayBackground" Fill="{StaticResource ListViewItemDragBackgroundThemeBrush}" IsHitTestVisible="False" Opacity="0"/>
+    										</Grid>
+    									</Border>
+    									<Rectangle x:Name="SelectedBorder" IsHitTestVisible="False" Margin="4" Opacity="0" Stroke="{StaticResource ListViewItemSelectedBackgroundThemeBrush}" StrokeThickness="{StaticResource ListViewItemSelectedBorderThemeThickness}"/>
+    									<Border x:Name="SelectedCheckMarkOuter" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="4" VerticalAlignment="Top">
+    										<Grid x:Name="SelectedCheckMark" Height="40" Opacity="0" Width="40">
+    											<Path x:Name="SelectedEarmark" Data="M0,0 L40,0 L40,40 z" Fill="{StaticResource ListViewItemSelectedBackgroundThemeBrush}" Stretch="Fill"/>
+    											<Path Data="F1 M133.1,17.9 L137.2,13.2 L144.6,19.6 L156.4,5.8 L161.2,9.9 L145.6,28.4 z" Fill="{StaticResource ListViewItemCheckThemeBrush}" FlowDirection="LeftToRight" HorizontalAlignment="Right" Height="13" Margin="0,5.5,5.5,0" Stretch="Fill" VerticalAlignment="Top" Width="15"/>
+    										</Grid>
+    									</Border>
+    									<TextBlock x:Name="MultiArrangeOverlayText" Foreground="{StaticResource ListViewItemDragForegroundThemeBrush}" FontSize="26.667" FontFamily="{StaticResource ContentControlThemeFontFamily}" IsHitTestVisible="False" Margin="18,9,0,0" Opacity="0" TextWrapping="Wrap" Text="{Binding TemplateSettings.DragItemsCount, RelativeSource={RelativeSource Mode=TemplatedParent}}" TextTrimming="WordEllipsis"/>
+    								</Grid>
+    							</Border>
+    						</Grid>
+    					</Border>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
+    	<DataTemplate x:Key="DayItemTemplate">
+    		<Border BorderBrush="#FF0046FF" Padding="10,0,0,0" BorderThickness="2,0,0,0">
+    			<StackPanel>
+    				<StackPanel Orientation="Horizontal">
+    					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Date: " VerticalAlignment="Top"/>
+    					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding CreatedTimeString, Mode=OneWay}" VerticalAlignment="Top" Margin="5,0,0,0"/>
+    				</StackPanel>
+    				<ListView Margin="20,10,20,20" ItemsSource="{Binding TimeEntriesInADay}" ItemTemplate="{StaticResource TimeEntryItemTemplate}" SelectionMode="None" ItemContainerStyle="{StaticResource ListViewItemStyle1}"/>
+    			</StackPanel>
+    		</Border>
+    	</DataTemplate>
+    	<ItemsPanelTemplate x:Key="DayItemPanel">
+    		<VirtualizingStackPanel />
+    	</ItemsPanelTemplate>
+    	<Style x:Key="ListViewStyle1" TargetType="ListView">
+    		<Setter Property="IsTabStop" Value="False"/>
+    		<Setter Property="TabNavigation" Value="Once"/>
+    		<Setter Property="IsSwipeEnabled" Value="True"/>
+    		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+    		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    		<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled"/>
+    		<Setter Property="ScrollViewer.IsHorizontalRailEnabled" Value="False"/>
+    		<Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled"/>
+    		<Setter Property="ScrollViewer.IsVerticalRailEnabled" Value="False"/>
+    		<Setter Property="ScrollViewer.ZoomMode" Value="Disabled"/>
+    		<Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False"/>
+    		<Setter Property="ScrollViewer.BringIntoViewOnFocusChange" Value="True"/>
+    		<Setter Property="ItemContainerTransitions">
+    			<Setter.Value>
+    				<TransitionCollection>
+    					<AddDeleteThemeTransition/>
+    					<ContentThemeTransition/>
+    					<ReorderThemeTransition/>
+    					<EntranceThemeTransition IsStaggeringEnabled="False"/>
+    				</TransitionCollection>
+    			</Setter.Value>
+    		</Setter>
+    		<Setter Property="ItemsPanel">
+    			<Setter.Value>
+    				<ItemsPanelTemplate>
+    					<VirtualizingStackPanel Orientation="Vertical"/>
+    				</ItemsPanelTemplate>
+    			</Setter.Value>
+    		</Setter>
+    		<Setter Property="Template">
+    			<Setter.Value>
+    				<ControlTemplate TargetType="ListView">
+    					<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+    						<ScrollViewer x:Name="ScrollViewer" BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}" IsHorizontalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsHorizontalScrollChainingEnabled}" IsVerticalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsVerticalScrollChainingEnabled}" IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}" IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}" TabNavigation="{TemplateBinding TabNavigation}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+    							<ItemsPresenter HeaderTemplate="{TemplateBinding HeaderTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}" Padding="{TemplateBinding Padding}"/>
+    						</ScrollViewer>
+    					</Border>
+    				</ControlTemplate>
+    			</Setter.Value>
+    		</Setter>
+    	</Style>
     </common:LayoutAwarePage.Resources>
 	<common:LayoutAwarePage.BottomAppBar>
 		<AppBar>
@@ -106,9 +238,44 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="Day Breakdown" Style="{StaticResource PageHeaderTextStyle}"/>
+			<TextBlock x:Name="pageTitle" Grid.Column="1" Text="Day Detail" Style="{StaticResource PageHeaderTextStyle}"/>
 		</Grid>
-		<ListView Grid.Row="1" Padding="120,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemsSource="{Binding DayManager.CurrentDayManager.AllDays}" ItemTemplate="{StaticResource DayItemTemplate}" SelectionMode="None" IsHitTestVisible="False"/>
+		<ListView Grid.Row="1" Padding="120,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ItemsSource="{Binding DayManager.CurrentDayManager.AllDays}" ItemTemplate="{StaticResource DayItemTemplate}" SelectionMode="None" ItemsPanel="{StaticResource DayItemPanel}" ScrollViewer.HorizontalScrollBarVisibility="Auto" Style="{StaticResource ListViewStyle1}" ItemContainerStyle="{StaticResource ListViewItemStyle1}">
+			<ListView.GroupStyle>
+				<GroupStyle>
+					<GroupStyle.ContainerStyle>
+						<Style TargetType="GroupItem">
+							<Setter Property="Template">
+								<Setter.Value>
+									<ControlTemplate TargetType="GroupItem">
+										<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+											<Grid>
+												<Grid.RowDefinitions>
+													<RowDefinition Height="Auto"/>
+													<RowDefinition Height="*"/>
+												</Grid.RowDefinitions>
+												<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"/>
+												<ItemsControl x:Name="ItemsControl" ItemsSource="{Binding GroupItems}" Grid.Row="1"/>
+											</Grid>
+										</Border>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</GroupStyle.ContainerStyle>
+					<GroupStyle.HeaderTemplate>
+						<DataTemplate>
+							<TextBlock/>
+						</DataTemplate>
+					</GroupStyle.HeaderTemplate>
+					<GroupStyle.Panel>
+						<ItemsPanelTemplate>
+							<VariableSizedWrapGrid/>
+						</ItemsPanelTemplate>
+					</GroupStyle.Panel>
+				</GroupStyle>
+			</ListView.GroupStyle>
+		</ListView>
 
 	</Grid>
 </common:LayoutAwarePage>

@@ -120,6 +120,8 @@
     <Compile Include="CommentUserControl.xaml.cs">
       <DependentUpon>CommentUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\DateFormatterConverter.cs" />
+    <Compile Include="Common\TimeFormatterConverter.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="DayBreakdown.xaml.cs">
       <DependentUpon>DayBreakdown.xaml</DependentUpon>
