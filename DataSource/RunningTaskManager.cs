@@ -15,7 +15,7 @@ namespace DataSource
         private bool _showHelpTextTasks = true;
         public bool ShowHelpTextTasks
         {
-            get { return _showHelpTextTasks; }
+            get { return _showHelpText; }
             set { SetProperty(ref _showHelpTextTasks, value); }
         }
 
@@ -33,7 +33,7 @@ namespace DataSource
         {
             ShowHelpText = true;
 
-            if (taskObject.IsVisible)
+            if (taskObject.IsVisible && !taskObject.IsCat)
             {
                 ShowHelpText = false;
 

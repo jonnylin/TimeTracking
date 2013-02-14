@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using DataSource;
 
 // The Split App template is documented at http://go.microsoft.com/fwlink/?LinkId=234228
 
@@ -45,6 +46,8 @@ namespace TimeTracker
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+
+            await AppDataSource.LoadLocalData();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -78,7 +81,7 @@ namespace TimeTracker
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(TaskList), "AllGroups"))
+                if (!rootFrame.Navigate(typeof(ItemsPage), "AllGroups"))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -97,6 +100,7 @@ namespace TimeTracker
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+            await AppDataSource.SaveLocalData();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
         }

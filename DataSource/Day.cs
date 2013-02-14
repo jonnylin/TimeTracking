@@ -11,8 +11,7 @@ namespace DataSource
     public class Day : BindableBase, IDataModel
     {
         private DateTime _createdTime = new DateTime();
-        public string CreatedTimeString { get { return _createdTime.ToString("d"); } }
-        public DateTime CreatedTime { get { return _createdTime; } }
+        public string CreatedTime { get { return _createdTime.ToString("d"); } }
 
         private ObservableCollection<TimeEntry> _timeEntriesInADay = new ObservableCollection<TimeEntry>();
         public ObservableCollection<TimeEntry> TimeEntriesInADay
