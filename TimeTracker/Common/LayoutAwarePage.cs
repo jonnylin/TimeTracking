@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using DataSource;
+﻿using DataSource;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -332,12 +331,6 @@ namespace TimeTracker.Common
         /// property provides the group to be displayed.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //if (AppDataSource.GetTaskObjectById("nwt") == null)
-            //{
-            //    AppDataSource.AddTask("Non Working Task", false, 1, "No active tasks", true, "nwt", false);
-            //    AppDataSource.SaveLocalData();
-            //}
-
             // Returning to a cached page through navigation shouldn't trigger state loading
             if (this._pageKey != null) return;
 
@@ -390,9 +383,8 @@ namespace TimeTracker.Common
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected virtual async Task<bool> LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected virtual void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            return true;
         }
 
         /// <summary>
@@ -405,6 +397,26 @@ namespace TimeTracker.Common
         {
         }
 
+
+        protected void NavStatsPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SummaryPage));
+        }
+
+        protected void NavListPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ItemsPage));
+        }
+
+        protected void NavTaskPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(TaskList));
+        }
+
+        protected void NavDayBreakdownPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(DayBreakdown));
+        }
         #endregion
 
         /// <summary>

@@ -29,32 +29,45 @@ namespace TimeTracker
         void AddNewTaskUserControl_Loaded(object sender, RoutedEventArgs e)
         {
             categoryComboBox.DataContext = AppDataSource.CurrentObject;
+
+            if (categoryComboBox.Items.Count > 0)
+            {
+                categoryComboBox.SelectedIndex = 0;
+            }
         }
 
-        public string NewWorkingTask(object sender, RoutedEventArgs e)
+        //public string NewWorkingTask(object sender, RoutedEventArgs e)
+        //{
+        //    string name = nameBox.Text;
+        //    string comment = commentBox.Text;
+        //    bool isWorking = (bool)workingTask.IsChecked;
+        //    int level = int.Parse(levelBox.Text);
+
+        //    HierarchyTaskObject selectedLevel = categoryComboBox.SelectedItem as HierarchyTaskObject;
+
+        //    if (selectedLevel == null)
+        //    {
+        //        selectedLevel = AppDataSource.FindTaskObject("noCat");
+        //    }
+
+        //    string id = Guid.NewGuid().ToString();
+
+        //    AppDataSource.ModifyNodeParent(AppDataSource.AddTask(name, isWorking, level, comment, false, id), selectedLevel.taskObj.UniqueId);
+
+        //    return id;
+        //}
+        public void AddTask(object sender, RoutedEventArgs e)
         {
-            string name = nameBox.Text;
-            string comment = commentBox.Text;
-            bool isWorking = (bool)workingTask.IsChecked;
-            int level = int.Parse(levelBox.Text);
+            HierarchyTaskObject selectedLevel = (categoryComboBox.SelectedItem as HierarchyTaskObject);
+            string parentId = "noCat";
 
-            HierarchyTaskObject selectedLevel = categoryComboBox.SelectedItem as HierarchyTaskObject;
-
-            if (selectedLevel == null)
+            if (selectedLevel != null)
             {
-                selectedLevel = AppDataSource.FindTaskObject("noCat");
+                parentId = selectedLevel.taskObj.UniqueId;
             }
 
-            string id = Guid.NewGuid().ToString();
-
-            AppDataSource.ModifyNodeParent(AppDataSource.AddTask(name, isWorking, level, comment, false, id), selectedLevel.taskObj.UniqueId);
-            //AppDataSource.SaveLocalData();
-
-            //AppDataSource.CurrentObject.NodeManager.GetAllLevels[1].LevelCollection[0].taskObj.Name = "CHANGED";
-
-            //AppDataSource.LoadLocalData();
-
-            return id;
+            AppDataSource.CurrentObject.TaskManager.AddTaskObject(parentId);
         }
+
     }
 }

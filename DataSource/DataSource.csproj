@@ -107,8 +107,6 @@
     <Compile Include="Common\BindableBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\BooleanNegationConverter.cs" />
-    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Converters.cs" />
@@ -120,28 +118,16 @@
     <Compile Include="HierarchyTaskObject.cs" />
     <Compile Include="IDataModel.cs" />
     <Compile Include="LevelObject.cs" />
-    <Compile Include="SaveLoadData.cs" />
     <Compile Include="MessageBox.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunningTaskManager.cs" />
-    <Compile Include="SaveHelper.cs" />
     <Compile Include="SubTask.cs" />
     <Compile Include="Summary.cs" />
+    <Compile Include="TaskManager.cs" />
     <Compile Include="TimeEntry.cs" />
     <Compile Include="TimeEntryCollection.cs" />
     <Compile Include="TimeManager.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Common\StandardStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Downloads\Json45r11\Bin\WinRT\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

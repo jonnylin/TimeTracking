@@ -309,10 +309,17 @@
     </common:LayoutAwarePage.Resources>
 	<common:LayoutAwarePage.BottomAppBar>
 		<AppBar>
-			<StackPanel Orientation="Horizontal">
-				<Button AutomationProperties.Name="add task" x:Name="add" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddClick"/>
-				<Button AutomationProperties.Name="add category" x:Name="addCat" Content="&#xE1F1;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddCatClick"/>
-			</StackPanel>
+			<Grid Height="84">
+				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+					<Button  AutomationProperties.Name="task view" Content="&#xE133;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="ButtonClick1"/>
+					<Button  AutomationProperties.Name="stats view" Content="&#xE121;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavStatsPage"/>
+					<Button  AutomationProperties.Name="Day Breakdown" Content="&#xE1DC;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavDayBreakdownPage"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+					<Button AutomationProperties.Name="add task" x:Name="add" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddClick" Height="84"/>
+					<Button AutomationProperties.Name="add category" x:Name="addCat" Content="&#xE1F1;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddCatClick" Height="84"/>
+				</StackPanel>
+			</Grid>
 		</AppBar>
 	</common:LayoutAwarePage.BottomAppBar>
 
@@ -418,10 +425,6 @@
 					<Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
 					<TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" IsHitTestVisible="false" Style="{StaticResource PageHeaderTextStyle}"/>
 				</Grid>
-				<StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,120,0" Orientation="Horizontal">
-					<Button  AutomationProperties.Name="task view" Content="&#xE133;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="ButtonClick1"/>
-					<Button  AutomationProperties.Name="stats view" Content="&#xE121;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavStatsPage"/>
-				</StackPanel>
 				<!-- Horizontal scrolling grid used in most view states -->
 
 			</Grid>

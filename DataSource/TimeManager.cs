@@ -7,9 +7,9 @@ namespace DataSource
     {
         private static TimeManager _timeManager = new TimeManager();
 
-        public static TimeManager GetCurrentObject()
+        public static TimeManager CurrentObject
         {
-            return _timeManager;
+            get { return _timeManager; }
         }
 
         private TimeEntry _runningTimeEntry;
@@ -38,7 +38,7 @@ namespace DataSource
 
             AppDataSource.CurrentObject.TaskCollection.AddToCollection(_timeManager.RunningTimeEntry);
 
-            AppDataSource.CurrentObject.Today.TimeEntriesInADay.Add(_timeManager.RunningTimeEntry);
+            AppDataSource.CurrentObject.DayManager.Today.TimeEntriesInADay.Add(_timeManager.RunningTimeEntry);
         }
 
         public static void StartTimerById(string id)

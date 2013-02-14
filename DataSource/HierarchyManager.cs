@@ -1,14 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Windows.Data.Xml.Dom;
-using Windows.Storage;
-using Newtonsoft.Json;
-using Windows.Storage.Streams;
 
 namespace DataSource
 {
@@ -16,6 +7,8 @@ namespace DataSource
     {
         private static ObservableCollection<LevelObject> _allLevels;
         public Guid guid { get; set; }
+        
+        //List<List<int>> list = new List<List<int>>();
 
         public HierarchyManager(string uniqueId, string name, Guid guid_input) : base (uniqueId, name)
         {
@@ -26,7 +19,6 @@ namespace DataSource
         public ObservableCollection<LevelObject> GetAllLevels
         {
             get { return _allLevels; }
-            set { _allLevels = value; }
         }
 
 

@@ -14,41 +14,71 @@
 
     <common:LayoutAwarePage.Resources>
 
-    	<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    	<local:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
 
-        <local:IsRunningToContentConverter x:Key="IsRunningToContentConverter"/>
+    	<local:BooleanNegationConverter x:Key="BooleanNegationConverter1"/>
+
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    	<local:IsRunningToContentConverter x:Key="IsRunningToContentConverter"/>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <DataTemplate x:Key="TaskListTemplate">
-        	<Grid d:DesignWidth="1409.5">
-        		<Grid.ColumnDefinitions>
-        			<ColumnDefinition Width="150"/>
-        			<ColumnDefinition Width="200"/>
-        			<ColumnDefinition Width="400"/>
-        			<ColumnDefinition Width="Auto"/>
-        		</Grid.ColumnDefinitions>
-        		<TextBlock TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,3" Grid.Column="1"/>
-        		<TextBlock TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Center" Margin="0,3" Grid.Column="2" MaxHeight="300"/>
-        		<Button Content="{Binding IsRunning, Converter={StaticResource IsRunningToContentConverter}}" HorizontalAlignment="Stretch" Click="PauseButtonClick" VerticalAlignment="Top" Margin="0,0,10,0"/>
-        	</Grid>
-        </DataTemplate>
-        <CollectionViewSource 
-            x:Name="currentTaskViewSource" 
-            Source="{Binding RunningTaskManager.RunningTasks}"/>
-        <CollectionViewSource
-            x:Name="itemsViewSource"
-            Source="{Binding RunningTaskManager.NotRunningTasks}"/>
-        <DataTemplate x:Key="DataTemplate1">
-        	<Grid>
-        		<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top"/>
-        	</Grid>
-        </DataTemplate>
+    	<DataTemplate x:Key="TaskListTemplate">
+    		<Grid d:DesignWidth="1409.5">
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition Width="150"/>
+    				<ColumnDefinition Width="200"/>
+    				<ColumnDefinition Width="400"/>
+    				<ColumnDefinition Width="Auto"/>
+    			</Grid.ColumnDefinitions>
+    			<TextBlock TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,3" Grid.Column="1"/>
+    			<TextBlock TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Center" Margin="0,3" Grid.Column="2" MaxHeight="300"/>
+    			<Button Content="{Binding IsRunning, Converter={StaticResource IsRunningToContentConverter}}" HorizontalAlignment="Stretch" Click="PauseButtonClick" VerticalAlignment="Top" Margin="0,0,10,0"/>
+    		</Grid>
+    	</DataTemplate>
+    	<CollectionViewSource 
+    		x:Name="currentTaskViewSource" 
+    		Source="{Binding RunningTaskManager.RunningTasks}"/>
+    	<CollectionViewSource
+    		x:Name="itemsViewSource"
+    		Source="{Binding RunningTaskManager.NotRunningTasks}"/>
+    	<DataTemplate x:Key="DataTemplate1">
+    		<Grid>
+    			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top"/>
+    		</Grid>
+    	</DataTemplate>
+    	<DataTemplate x:Key="RunningItemTemplate">
+    		<Grid d:DesignWidth="1409.5">
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition Width="150"/>
+    				<ColumnDefinition Width="200"/>
+    				<ColumnDefinition Width="400"/>
+    				<ColumnDefinition Width="300"/>
+    				<ColumnDefinition/>
+    			</Grid.ColumnDefinitions>
+    			<TextBlock TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Center" Margin="0,10,0,9" Grid.Column="1"/>
+    			<TextBlock TextWrapping="Wrap" Text="{Binding Comment}" VerticalAlignment="Center" Grid.Column="2" Margin="0,10,0,9"/>
+    			<Button Content="{Binding IsRunning, Converter={StaticResource IsRunningToContentConverter}}" HorizontalAlignment="Stretch" Click="PauseButtonClick" VerticalAlignment="Top" Margin="0,0,10,0"/>
+    			<TextBox TextWrapping="Wrap" Text="{Binding CurrentObject.RunningTimeEntry.Comment, Mode=TwoWay}" Grid.Column="3" KeyDown="TextBox_KeyDown">
+    				<TextBox.DataContext>
+    					<DataSource:TimeManager/>
+    				</TextBox.DataContext>
+    			</TextBox>
+    		</Grid>
+    	</DataTemplate>
     </common:LayoutAwarePage.Resources>
 	<common:LayoutAwarePage.BottomAppBar>
 		<AppBar>
-			<StackPanel Height="100" Orientation="Horizontal">
-				<Button AutomationProperties.Name="start task" Content="&#xE102;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="StartTaskClick"/>
-				<Button AutomationProperties.Name="add task" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddTaskClick"/>
-			</StackPanel>
+			<Grid>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+					<Button AutomationProperties.Name="start task" Content="&#xE102;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="StartTaskClick" Visibility="Collapsed"/>
+					<Button AutomationProperties.Name="add task" Content="&#xE109;" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource AppBarButtonStyle}" Click="AddTaskClick"/>
+				</StackPanel>
+				<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+					<Button  AutomationProperties.Name="list view" Content="&#xE10F;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavListPage"/>
+					<Button  AutomationProperties.Name="stats view" Content="&#xE121;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavStatsPage"/>
+					<Button  AutomationProperties.Name="Day Breakdown" Content="&#xE1DC;" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AppBarButtonStyle}" Click="NavDayBreakdownPage"/>
+				</StackPanel>
+			</Grid>
 		</AppBar>
 	</common:LayoutAwarePage.BottomAppBar>
 
@@ -108,12 +138,16 @@
 
 					<Grid x:Name="pop" Background="White">
 						<Grid x:Name="TaskGrid" Width="600" Margin="0,20">
-							<local:AddNewTaskUserControl x:Name="newTaskUserControl" HorizontalAlignment="Center" Padding="0,0,0,40" Margin="0,0,0,50"/>
+							<local:AddNewTaskUserControl x:Name="newTaskUserControl" HorizontalAlignment="Center" Padding="0,0,0,40" Margin="0,0,0,50">
+								<local:AddNewTaskUserControl.DataContext>
+									<DataSource:AppDataSource/>
+								</local:AddNewTaskUserControl.DataContext>
+							</local:AddNewTaskUserControl>
 							<StackPanel x:Name="comboBoxAndButton" Margin="0,0,0,50" d:IsHidden="True">
 								<TextBlock Text="Start New Task" Foreground="Black" FontSize="26.667" HorizontalAlignment="Left" FontFamily="Segoe UI" VerticalAlignment="Top" />
 								<StackPanel HorizontalAlignment="Center" Width="300" Height="76">
 									<TextBlock Text="Select From Existing List" Foreground="Black" FontSize="21.333" VerticalAlignment="Center" FontFamily="Segoe UI" HorizontalAlignment="Left" />
-									<ComboBox x:Name="TaskComboBox" ItemsSource="{Binding TotalTasks}" ItemTemplate="{StaticResource DataTemplate1}">
+									<ComboBox x:Name="TaskComboBox" ItemsSource="{Binding VisibleTasks}" ItemTemplate="{StaticResource DataTemplate1}">
 										<ComboBox.DataContext>
 											<DataSource:AppDataSource/>
 										</ComboBox.DataContext>
@@ -122,12 +156,12 @@
 								<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="OR" VerticalAlignment="Center" FontSize="16" Margin="0,0,0,10"/>
 								<Button x:Name="newTaskButton" Content="create new task" HorizontalAlignment="Center" VerticalAlignment="Stretch" Click="NewTaskButtonClick"/>
 							</StackPanel>
-							<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0">
-								<Button x:Name="start_task" Click="StartTaskBtnClick" Foreground="Black"   Content="start task" HorizontalAlignment="Right" Width="100" />
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+								<Button x:Name="start_task" Click="CreateTaskBtnClick" Foreground="Black"   Content="start task" HorizontalAlignment="Right" Width="100" />
 								<Button Content="cancel" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="100" Click="Cancel"/>
 							</StackPanel>
 						</Grid>
-						<Grid x:Name="CommentGrid" Width="600" Margin="0,20">
+						<Grid x:Name="CommentGrid" Width="600" Margin="0,20" d:IsHidden="True">
 							<local:CommentUserControl x:Name="CommentUserControl" HorizontalAlignment="Left" Margin="0,0,0,40" VerticalAlignment="Top" Width="Auto"/>
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
 								<Button Content="save" HorizontalAlignment="Right" VerticalAlignment="Stretch" Click="SaveComment" Width="100"/>
@@ -159,9 +193,30 @@
 				<StackPanel x:Name="stackPanel" Grid.Row="1" Margin="120,0,120,50">
 					<TextBlock TextWrapping="Wrap" Text="Running Task" FontSize="29.333" Margin="0,0,0,10"/>
 					<TextBlock TextWrapping="Wrap" Text="No active tasks running, please choose a task from the list below to start" Visibility="{Binding RunningTaskManager.ShowHelpText, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="24" Foreground="#FF818181"/>
-					<ListView x:Name="RunningTaskListView" ItemsSource="{Binding Source={StaticResource currentTaskViewSource}}" ItemTemplate="{StaticResource TaskListTemplate}" SelectionChanged="ListBox_SelectionChanged_1" SelectionMode="None" Margin="0,0,0,30" />
+					<Grid Visibility="{Binding RunningTaskManager.ShowHelpText, Converter={StaticResource BooleanToVisibilityNegationConverter}}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="150"/>
+							<ColumnDefinition Width="200"/>
+							<ColumnDefinition Width="400"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,3,0,3" Grid.Column="1" Text="Task Name" FontSize="21.333"/>
+						<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,3,0,3" Grid.Column="2" MaxHeight="300" Text="Comment" FontSize="21.333"/>
+						<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="3" MaxHeight="300" Text="Comment On Current Time Entry" FontSize="21.333" Margin="5,0,0,0"/>
+					</Grid>
+					<ListView x:Name="RunningTaskListView" ItemsSource="{Binding Source={StaticResource currentTaskViewSource}}" ItemTemplate="{StaticResource RunningItemTemplate}" SelectionChanged="ListBox_SelectionChanged_1" SelectionMode="None" Margin="0,0,0,30" />
 					<TextBlock TextWrapping="Wrap" Text="Other Tasks" FontSize="29.333" Margin="0,0,0,10"/>
-					<TextBlock TextWrapping="Wrap" Text="No tasks available, please add tasks to categories first" Visibility="{Binding RunningTaskManager.ShowHelpText, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="24" Foreground="#FF818181"/>
+					<TextBlock TextWrapping="Wrap" Text="No tasks available, please add tasks to categories first" Visibility="{Binding RunningTaskManager.ShowHelpTextTasks, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="24" Foreground="#FF818181"/>
+					<Grid d:DesignWidth="1409.5" Visibility="{Binding RunningTaskManager.ShowHelpTextTasks, Converter={StaticResource BooleanNegationConverter1}}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="150"/>
+							<ColumnDefinition Width="200"/>
+							<ColumnDefinition Width="400"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,3,0,3" Grid.Column="1" Text="Task Name" FontSize="21.333"/>
+						<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,3,0,3" Grid.Column="2" MaxHeight="300" Text="Comment" FontSize="21.333"/>
+					</Grid>
 					<ListView x:Name="OtherTaskListView" ItemsSource="{Binding Source={StaticResource itemsViewSource}}" ItemTemplate="{StaticResource TaskListTemplate}" SelectionChanged="ListBox_SelectionChanged_1" SelectionMode="None"/>
 				</StackPanel>
 
