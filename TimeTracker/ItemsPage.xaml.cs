@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
+using TimeTracker.Data;
 
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,7 @@ namespace TimeTracker
         public ItemsPage()
         {
             this.InitializeComponent();
+            //AppDataSource.SaveLocalData();
         }
 
         /// <summary>
@@ -30,8 +33,12 @@ namespace TimeTracker
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected override async Task<bool> LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            await base.LoadState(navigationParameter, pageState);
+
+            normalControl.DataContext = AppDataSource.CurrentObject;
+            return true;
         }
 
         private void HidePopUp()
@@ -77,6 +84,9 @@ namespace TimeTracker
         private void AddCatClick(object sender, RoutedEventArgs e)
         {
             ShowNewTaskBox(true);
+            //await AppDataSource.SaveLocalData();
+            //AppDataSource.NodeManager.GetAllLevels.Clear();
+            //await AppDataSource.LoadLocalData();
 
             BottomAppBar.IsOpen = false;
         }
@@ -108,6 +118,7 @@ namespace TimeTracker
                     }
                 }
             }
+            //await AppDataSource.SaveLocalData();
         }
 
         private async void DeleteTask(object sender, RoutedEventArgs e)
@@ -132,6 +143,12 @@ namespace TimeTracker
                         }
                 }
             }
+            //await AppDataSource.SaveLocalData();
+        }
+
+        private void NavStatsPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SummaryPage));
         }
 
         private void StartTaskBtnClick(object sender, RoutedEventArgs e)
@@ -140,7 +157,7 @@ namespace TimeTracker
             {
                 if (newTaskUserControl.Visibility == Visibility.Visible)
                 {
-                    newTaskUserControl.AddTask(sender, e);
+                    newTaskUserControl.NewWorkingTask(sender, e);
                 }
                 else
                 {
@@ -149,21 +166,25 @@ namespace TimeTracker
 
                 HidePopUp();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                string x = ex.Message;
                 MessageBox.ShowAsync("Error adding task, please check your fields", "Error", MessageBoxButton.OK);
             }
         }
 
-        private void Cancel(object sender, RoutedEventArgs e)
+        private async void Cancel(object sender, RoutedEventArgs e)
         {
+            //await AppDataSource._appDataSource.SaveLocalData();
+            //await AppDataSource._appDataSource.LoadLocalData();
+
             HidePopUp();
         }
 
         #region Drag and Drop
 
 
-        private void ListView_DragItemsStarting_1(object sender, DragItemsStartingEventArgs e)
+        private async void ListView_DragItemsStarting_1(object sender, DragItemsStartingEventArgs e)
         {
             var item = e.Items.FirstOrDefault();
             if (item == null)
@@ -171,9 +192,11 @@ namespace TimeTracker
 
             e.Data.Properties.Add("item", item);
             e.Data.Properties.Add("dragSource", sender);
+
+            //await AppDataSource.SaveLocalData();
         }
 
-        private void CategoryDrop(object sender, DragEventArgs e)
+        private async void CategoryDrop(object sender, DragEventArgs e)
         {
             object gridSource;
             e.Data.Properties.TryGetValue("dragSource", out gridSource);
@@ -188,8 +211,9 @@ namespace TimeTracker
 
             TaskObject droppedObject = sourceItem as TaskObject;
 
-            AppDataSource.ModifyNodeParent(droppedObject.UniqueId, ((sender as Grid).DataContext as HierarchyTaskObject).taskObj.UniqueId);
-            //
+            await AppDataSource.ModifyNodeParent(droppedObject.UniqueId, ((sender as Grid).DataContext as HierarchyTaskObject).taskObj.UniqueId);
+            //await AppDataSource.SaveLocalData();
+
         }
         #endregion
     }

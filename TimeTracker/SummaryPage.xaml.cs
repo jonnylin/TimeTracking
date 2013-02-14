@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TimeTracker.Common;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -36,9 +37,10 @@ namespace TimeTracker
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
-        {
-        }
+        protected override async Task<bool> LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+       {
+           return true;
+       }
 
         /// <summary>
         /// Preserves state associated with this page in case the application is suspended or the
@@ -48,21 +50,6 @@ namespace TimeTracker
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
-        }
-
-        private void NavTaskPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(TaskList));
-        }
-
-        private void NavListPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ItemsPage));
-        }
-
-        private void NavDayBreakdownPage(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(DayBreakdown));
         }
     }
 }

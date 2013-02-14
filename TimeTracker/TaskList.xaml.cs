@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DataSource;
 using TimeTracker.Common;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -19,7 +19,7 @@ namespace TimeTracker
 
         private enum PopUpType
         {
-            NewTask, StartTask
+            NewTask, StartTask, AddComment
         }
 
         public TaskList()
@@ -36,9 +36,10 @@ namespace TimeTracker
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected override async Task<bool> LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
             this.DataContext = AppDataSource.CurrentObject;
+            return true;
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace TimeTracker
             }
         }
 
-        public void HidePopUp()
+        private void HidePopUp()
         {
             _isFromAppBar = false;
             normalControl.IsEnabled = true;
@@ -114,31 +115,25 @@ namespace TimeTracker
                     comboBoxAndButton.Visibility = Visibility.Visible;
                     break;
 
-                //case PopUpType.AddComment:
+                case PopUpType.AddComment:
 
-                //    TaskGrid.Visibility = Visibility.Collapsed;
-                //    CommentGrid.Visibility = Visibility.Visible;
+                    TaskGrid.Visibility = Visibility.Collapsed;
+                    CommentGrid.Visibility = Visibility.Visible;
 
-                //    break;
+                    break;
 
                 default:
                     throw new ArgumentOutOfRangeException("popUpType");
             }
         }
 
+
         private void PauseButtonClick(object sender, RoutedEventArgs e)
         {
             TaskObject selectedObject = (sender as Button).DataContext as TaskObject;
 
-            if (selectedObject.IsRunning)
-            {
-                TimeManager.StartNonWorkingTask();
-                //PauseTask();
-            }
-            else
-            {
-                NewTimeEntryObject(selectedObject.UniqueId);
-            }
+            ShowPopUp(PopUpType.AddComment);
+            CommentUserControl.DataContext = selectedObject;
         }
 
         private void NewTimeEntryObject(string id)
@@ -161,14 +156,29 @@ namespace TimeTracker
             UpdatePopupBoxContent(PopUpType.NewTask);
         }
 
-        private async void CreateTaskBtnClick(object sender, RoutedEventArgs e)
+        private async void StartTaskBtnClick(object sender, RoutedEventArgs e)
         {
             try
             {
+                MessageBoxResult messageBoxResult = new MessageBoxResult();
+                string newTaskId;
 
                 if (newTaskUserControl.Visibility == Visibility.Visible)
                 {
-                    newTaskUserControl.AddTask(sender, e);
+                    newTaskId = newTaskUserControl.NewWorkingTask(sender, e);
+
+                    messageBoxResult = await MessageBox.ShowAsync("Would you like to start this task now?", "Task Added", MessageBoxButton.YesNo);
+                }
+                else
+                {
+                    TaskObject selectedTask = TaskComboBox.SelectedItem as TaskObject;
+
+                    newTaskId = selectedTask.UniqueId;
+                }
+
+                if (messageBoxResult != MessageBoxResult.No)
+                {
+                    NewTimeEntryObject(newTaskId); 
                 }
 
                 HidePopUp();
@@ -211,14 +221,16 @@ namespace TimeTracker
         {
             TaskObject selectedObject = CommentUserControl.DataContext as TaskObject;
 
-        }
-
-        private void TextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Enter)
+            if (selectedObject.IsRunning)
             {
-                pageRoot.Focus(FocusState.Programmatic);
+                PauseTask();
             }
+            else
+            {
+                NewTimeEntryObject(selectedObject.UniqueId);
+            }
+
+            HidePopUp();
         }
     }
 }

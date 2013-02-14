@@ -14,14 +14,15 @@ namespace TimeTracker
             this.InitializeComponent();
         }
 
-        public string NewCategory(object sender, RoutedEventArgs e)
+        public async void NewCategory(object sender, RoutedEventArgs e)
         {
             string name = nameBox.Text;
             string comment = commentBox.Text;
 
             string id = Guid.NewGuid().ToString();
-
-            return AppDataSource.AddTask(name, false, 1, comment, true);
+            string returnVal = AppDataSource.AddTask(name, false, 1, comment, true);
+            await AppDataSource.SaveLocalData();
+            //return returnVal;
         }
     }
 }
