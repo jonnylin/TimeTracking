@@ -4,15 +4,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:DataSource="using:DataSource"
-    xmlns:Common="using:DataSource.Common"
-    x:Name="pageRoot"
+    xmlns:Common="using:DataSource.Common" xmlns:TimeTracker="using:TimeTracker" x:Name="pageRoot"
     x:Class="TimeTracker.SummaryPage"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Mode=Self}}"
     mc:Ignorable="d">
 
     <common:LayoutAwarePage.Resources>
 
-    	<Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    	<TimeTracker:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
         <DataTemplate x:Key="DataTemplate3">
         	<StackPanel><TextBlock TextWrapping="Wrap" Text="{Binding Name}" FontSize="16"/>

@@ -14,11 +14,11 @@
 
     <common:LayoutAwarePage.Resources>
 
-    	<common:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
+    	<local:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
 
-    	<common:BooleanNegationConverter x:Key="BooleanNegationConverter1"/>
+    	<local:BooleanNegationConverter x:Key="BooleanNegationConverter1"/>
 
-        <Common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     	<local:IsRunningToContentConverter x:Key="IsRunningToContentConverter"/>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->

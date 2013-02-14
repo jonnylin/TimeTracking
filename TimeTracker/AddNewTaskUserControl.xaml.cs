@@ -56,12 +56,6 @@ namespace TimeTracker
 
         //    return id;
         //}
-
-        public void Cancel(object sender, RoutedEventArgs e)
-        {
-            AppDataSource.CurrentObject.TaskManager.DeleteTempObject();
-        }
-
         public void AddTask(object sender, RoutedEventArgs e)
         {
             HierarchyTaskObject selectedLevel = (categoryComboBox.SelectedItem as HierarchyTaskObject);
@@ -73,8 +67,6 @@ namespace TimeTracker
             }
 
             AppDataSource.CurrentObject.TaskManager.AddTaskObject(parentId);
-
-            AppDataSource.CurrentObject.TaskManager.DeleteTempObject();
         }
 
     }

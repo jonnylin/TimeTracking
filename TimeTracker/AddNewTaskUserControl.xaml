@@ -67,7 +67,7 @@
 		<TextBox x:Name="parentIDBox" TextWrapping="Wrap" Text="{Binding CurrentObject.TaskManager.NewObject.Parent, Mode=TwoWay}" Visibility="Collapsed"/>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0" Visibility="Collapsed">
 			<Button x:Name="start_task" Click="AddTask" Foreground="Black"   Content="add task" HorizontalAlignment="Right" Width="100" />
-			<Button Content="cancel" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="100" Click="Cancel"/>
+			<Button Content="cancel" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="100"/>
 		</StackPanel>
 
 	</StackPanel>

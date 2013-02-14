@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataSource
@@ -17,7 +14,11 @@ namespace DataSource
             }
         }
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set { SetProperty(ref _isVisible,value); }
+        }
 
         public TimeEntryCollection TimeEntryCollection { get { return AppDataSource.CurrentObject.TaskCollection.GetCollectionById(UniqueId); } }
 
@@ -31,9 +32,9 @@ namespace DataSource
             {
                 SetProperty(ref _isRunning, value);
 
+                    AppDataSource.CurrentObject.RunningTaskManager.UpdateTask(this);
                 try
                 {
-                    AppDataSource.CurrentObject.RunningTaskManager.UpdateTask(this);
                 }
                 catch (Exception)
                 {
@@ -69,6 +70,7 @@ namespace DataSource
 
 
         private string _comment;
+        private bool _isVisible;
         public string Comment { get { return _comment; } set { SetProperty(ref _comment, value); } }
 
         public TaskObject(string name, string uniqueId, string comment, bool working, bool isVisible = true)

@@ -13,13 +13,13 @@
 
     <common:LayoutAwarePage.Resources>
 
-    	<common:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
+    	<local:BooleanToVisibilityNegationConverter x:Key="BooleanToVisibilityNegationConverter"/>
 
-    	<common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    	<local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-    	<common:TimeTakenFormatterConverter x:Key="TimeTakenFormatterConverter"/>
+    	<local:TimeTakenFormatterConverter x:Key="TimeTakenFormatterConverter"/>
 
-    	<common:TimeFormatterConverter x:Key="TimeFormatterConverter"/>
+    	<local:TimeFormatterConverter x:Key="TimeFormatterConverter"/>
 
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
     	<x:String x:Key="AppName">My Application</x:String>
