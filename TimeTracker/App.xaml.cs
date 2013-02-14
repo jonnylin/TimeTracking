@@ -1,21 +1,12 @@
 ﻿//using TimeTracker.Common;
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using DataSource;
 using TimeTracker.Common;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Split App template is documented at http://go.microsoft.com/fwlink/?LinkId=234228
 
@@ -45,6 +36,8 @@ namespace TimeTracker
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+
+            await AppDataSource.LoadLocalData();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -97,6 +90,7 @@ namespace TimeTracker
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+            await AppDataSource.SaveLocalData();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
         }

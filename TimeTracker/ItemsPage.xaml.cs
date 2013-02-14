@@ -32,6 +32,7 @@ namespace TimeTracker
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            normalControl.DataContext = AppDataSource.CurrentObject;
         }
 
         private void HidePopUp()
@@ -173,7 +174,7 @@ namespace TimeTracker
             e.Data.Properties.Add("dragSource", sender);
         }
 
-        private void CategoryDrop(object sender, DragEventArgs e)
+        private async void CategoryDrop(object sender, DragEventArgs e)
         {
             object gridSource;
             e.Data.Properties.TryGetValue("dragSource", out gridSource);
@@ -187,8 +188,7 @@ namespace TimeTracker
                 return;
 
             TaskObject droppedObject = sourceItem as TaskObject;
-
-            AppDataSource.ModifyNodeParent(droppedObject.UniqueId, ((sender as Grid).DataContext as HierarchyTaskObject).taskObj.UniqueId);
+            await AppDataSource.ModifyNodeParent(droppedObject.UniqueId, ((sender as Grid).DataContext as HierarchyTaskObject).taskObj.UniqueId);
             //
         }
         #endregion

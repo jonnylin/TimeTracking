@@ -10,7 +10,7 @@ namespace DataSource
         {
             get
             {
-                return (AppDataSource.FindTaskObject(this.UniqueId).hierarchyObj.Parent == null);
+                return false; //(AppDataSource.FindTaskObject(this.UniqueId).hierarchyObj.Parent == null)
             }
         }
 
@@ -64,7 +64,7 @@ namespace DataSource
         {
             get
             {
-                return (from hierachyTaskObject in AppDataSource.NodeManager.GetAllLevels[1].LevelCollection where hierachyTaskObject.taskObj.UniqueId == this.UniqueId select hierachyTaskObject.hierarchyObj.Parent.Name).FirstOrDefault();
+                return (from hierachyTaskObject in AppDataSource.CurrentObject.NodeManager.GetAllLevels[1].LevelCollection where hierachyTaskObject.taskObj.UniqueId == this.UniqueId select hierachyTaskObject.hierarchyObj.Parent.Name).FirstOrDefault();
             }
         }
 

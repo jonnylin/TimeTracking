@@ -8,8 +8,6 @@ namespace DataSource
         private static ObservableCollection<LevelObject> _allLevels;
         public Guid guid { get; set; }
         
-        //List<List<int>> list = new List<List<int>>();
-
         public HierarchyManager(string uniqueId, string name, Guid guid_input) : base (uniqueId, name)
         {
             _allLevels = new ObservableCollection<LevelObject>();
